@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>CareGraph · Hospital CRM</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Kannada:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FEF8E8;--card:#fff;--tx:#0B2A33;--mu:#556A6E;--bd:#EFE6CC;--side:#0B2A33;--sideh:#14424A;--pr:#1E6B3A;--prh:#267A46;--g:#DDF1D3;--gt:#1E6B3A;--r:#FBE3DF;--rt:#A8221A;--a:#FDEBC4;--at:#8A5A00;--b:#DCE9F7;--bt:#1D4E9E;--n:#EFE9D6;--nt:#556A6E;--row:#FBF1D6;--chat:#F3EBD3;--bub:#fff;--out:#DDF1D3;--phh:#E3EBD3;--ql:#1D6FB8;--glow:rgba(245,168,0,.18);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg) radial-gradient(900px 340px at 85% -80px,var(--glow),transparent) no-repeat;color:var(--tx);font:14px/1.45 'Plus Jakarta Sans','Noto Sans Devanagari','Noto Sans Kannada',system-ui,-apple-system,'Segoe UI',sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}
+:focus-visible{outline:3px solid #F5A800;outline-offset:2px}
+.ic{flex:none;display:block}.app{display:flex;min-height:100vh}
+.side{width:226px;flex:none;background:var(--side);color:#fff;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;padding:14px 0 0}
+.brand{display:flex;align-items:center;gap:8px;padding:2px 20px 18px;font-size:23px;font-weight:700;letter-spacing:-.01em}
+.nsub{padding:2px 0 8px;background:rgba(0,0,0,.12)}.nsub>span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8FAAA6;padding:8px 20px 4px 54px}.nsb{display:flex;align-items:center;gap:10px;width:100%;border:none;background:none;color:#B3C9CC;text-align:left;padding:7px 20px 7px 54px;font-size:13.5px;font-weight:500}.nsb::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid #7E9C9F;flex:none}.nsb:hover{background:rgba(255,255,255,.06);color:#fff}.nsb.on{color:#fff;font-weight:700}.nsb.on::before{background:#F5A800;border-color:#F5A800}
+.rtabs{margin:0 14px 14px;padding:10px;border-radius:14px;background:rgba(255,255,255,.06)}.rtabs>span{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9DB8B4;margin:0 4px 8px}.rtabs div{display:grid;grid-template-columns:1fr 1fr;gap:6px}.rtab{border:1px solid rgba(255,255,255,.14);background:transparent;color:#C3D7DA;border-radius:9px;padding:8px 6px;font-size:13px;font-weight:600}.rtab:hover{background:rgba(255,255,255,.08);color:#fff}.rtab.on{background:#F5A800;border-color:#F5A800;color:#0B2A33}
+.nav{display:flex;align-items:center;gap:14px;padding:13px 20px;color:#C3D7DA;font-weight:500;font-size:15px;background:none;border:none;width:100%;text-align:left}
+.nav:hover{background:rgba(255,255,255,.06)}.nav.on{background:var(--sideh);color:#fff;box-shadow:inset 3px 0 0 #F5A800}
+.nav i{margin-left:auto;font-style:normal;background:#D93A2B;color:#fff;border-radius:99px;min-width:22px;height:22px;display:grid;place-items:center;font-size:12px;font-weight:700;padding:0 6px}.nav i:empty{display:none}
+.tag{margin:auto 14px 14px;background:#FEF8E8;color:#0B2A33;border-radius:14px;padding:12px 14px;font-weight:700;font-size:13.5px;line-height:1.35}.tag small{display:block;font-weight:500;color:var(--mu);margin-top:3px}.sf{border-top:1px solid rgba(255,255,255,.12)}
+.sf>div{display:flex;align-items:center;gap:12px;padding:14px 18px;font-size:13px;line-height:1.3}.sf small{display:block;color:#A9C2C6}
+.sq{width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.1);display:grid;place-items:center;flex:none}
+.av{width:36px;height:36px;border-radius:50%;background:#DDE3E6;color:#38505A;display:grid;place-items:center;font-weight:600;font-size:13px;flex:none;border:none}
+.main{flex:1;min-width:0}
+.top{display:flex;align-items:center;gap:14px;min-height:68px;padding:8px 24px;flex-wrap:wrap;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:5}
+.hosp{display:flex;align-items:center;gap:12px;background:var(--a);border-radius:14px;padding:6px 18px 6px 8px}.hq{width:40px;height:40px;border-radius:11px;background:#F5A800;color:#0B2A33;display:grid;place-items:center}.hosp b{display:block;font-size:18px;font-weight:800;line-height:1.2;letter-spacing:-.01em}.hosp small{color:var(--at);font-size:12px;font-weight:600}
+.pw{display:flex;align-items:center;gap:10px;border-left:2px solid var(--bd);padding-left:16px;color:var(--mu);font-size:12.5px;font-weight:600}.cgl{display:flex;align-items:center;gap:6px;font-size:23px;font-weight:800;letter-spacing:-.02em;color:var(--tx)}
+.rsel{margin-left:auto;display:none;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:var(--mu)}.rsel select{height:40px;width:auto;min-width:170px;font-weight:700;color:var(--tx);background:var(--bg)}
+.ib{position:relative;background:none;border:none;padding:8px;color:var(--tx);margin-left:auto}.ib b{position:absolute;top:6px;right:7px;width:9px;height:9px;border-radius:50%;background:#D93A2B;border:2px solid var(--card)}.ib b[hidden]{display:none}
+.mnav{display:none;gap:6px;overflow-x:auto;padding:8px 16px;background:var(--card);border-bottom:1px solid var(--bd);position:sticky;top:0;z-index:4}
+.mnav button{flex:none;border:1.5px solid var(--bd);background:var(--card);border-radius:99px;padding:7px 14px;font-weight:600;font-size:13px}.mnav button.on{background:var(--side);border-color:var(--side);color:#fff}
+.pg{padding:20px 24px 40px;max-width:1560px}
+.bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.sw{position:relative;flex:1;min-width:240px;max-width:560px}.sw>span{position:absolute;left:16px;top:0;bottom:0;display:flex;align-items:center;color:var(--mu);pointer-events:none}
+.sw input{width:100%;height:46px;border-radius:14px;border:1.5px solid var(--bd);background:var(--card);padding:0 16px 0 48px;box-shadow:0 6px 18px rgba(138,90,0,.06)}
+.sr{position:absolute;top:52px;left:0;right:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15);padding:6px;z-index:10}
+.sr button{display:flex;justify-content:space-between;gap:8px;width:100%;padding:10px;border:none;background:none;border-radius:8px;text-align:left}.sr button:hover{background:var(--row)}
+.bar .sp2{flex:1}
+.h1r{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15}.h1r p{margin:4px 0 0;color:var(--mu);font-size:16px}
+.date{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--bd);border-radius:10px;padding:0 16px;height:46px;font-weight:500;font-size:15px}
+.pb{display:flex;align-items:center;gap:10px;height:46px;padding:0 20px;border-radius:12px;border:none;background:#F5A800;color:#000;font-weight:700;font-size:15px;white-space:nowrap}.pb:hover{background:#FFB91F}
+.rb{display:flex;align-items:center;gap:8px;height:46px;padding:0 16px;border-radius:12px;border:1.5px solid var(--bd);background:var(--card);color:var(--tx);font-weight:600;font-size:14px;white-space:nowrap}.rb:hover{background:var(--row)}
+.kp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.k{display:flex;align-items:center;gap:16px;padding:18px 20px}.k .bx{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;flex:none}
+.k b{display:block;font-size:28px;line-height:1.1;font-weight:700}.k .l{font-size:15px;font-weight:500}.k small{display:block;font-size:13px;margin-top:2px;color:var(--mu)}.k small.up{color:var(--gt)}.k small.dn{color:var(--rt)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:20px;min-width:0;box-shadow:0 1px 0 rgba(11,42,51,.03),0 10px 28px rgba(138,90,0,.07)}
+.g2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:16px;align-items:start}
+.g2e{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+.c2{display:flex;flex-direction:column;gap:16px;min-width:0}
+.ch{display:flex;align-items:center;gap:12px;margin-bottom:14px}.ch .bx{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none}
+.ch h2{margin:0;font-size:18px;font-weight:700;line-height:1.2}.ch p{margin:1px 0 0;color:var(--mu);font-size:13px}.ch>div:nth-child(2){flex:1;min-width:0}
+.pill{display:inline-block;padding:4px 12px;border-radius:99px;font-size:12.5px;font-weight:500;white-space:nowrap}
+.pill.g{background:var(--g);color:var(--gt)}.pill.r{background:var(--r);color:var(--rt)}.pill.a{background:var(--a);color:var(--at)}.pill.b{background:var(--b);color:var(--bt)}.pill.n{background:var(--n);color:var(--nt)}
+.pill.u{background:#D93A2B;color:#fff;font-weight:800;white-space:normal;line-height:1.25;animation:pu 1.6s infinite}
+@keyframes pu{0%,100%{box-shadow:0 0 0 0 rgba(217,58,43,.55)}50%{box-shadow:0 0 0 7px rgba(217,58,43,0)}}
+.sev{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:12.5px;font-weight:700;white-space:nowrap}.sev.c{background:#A8221A;color:#fff}.sev.h{background:var(--r);color:var(--rt)}.sev.m{background:var(--a);color:var(--at)}.sev.l{background:var(--g);color:var(--gt)}.sev.x{background:var(--n);color:var(--nt);font-weight:500}
+.lnk{background:none;border:none;color:var(--bt);font-size:13px;display:flex;align-items:center;gap:2px;padding:4px;white-space:nowrap}
+.ab{height:36px;padding:0 12px;border-radius:8px;border:1.5px solid var(--pr);background:var(--card);color:var(--tx);font-weight:600;font-size:13px;white-space:nowrap}.ab:hover{background:var(--row)}
+.ab.hot{background:#D93A2B;border-color:#D93A2B;color:#fff}.ab.hot:hover{background:#B92E21}
+.empty{color:var(--mu);padding:14px 8px}
+.sc{overflow-x:auto}
+/* worklist rows */
+.tr{display:grid;grid-template-columns:1.3fr 2fr auto auto;gap:12px;align-items:center;padding:12px 8px;border-top:1px solid var(--bd);font-size:13.5px;cursor:pointer;border-radius:0}
+.tr.hd{background:var(--bg);border:none;border-radius:8px;font-weight:600;font-size:13px;cursor:default;padding:10px 8px}.tr:not(.hd):hover,.tr.sel{background:var(--row)}
+.tr.urg{background:#FFF0ED;box-shadow:inset 5px 0 0 #D93A2B}.tr.urg:hover{background:#FFE4DF}
+.tr small{display:block;color:var(--mu);font-size:12.5px}.tr .cn{color:var(--tx);font-weight:500}
+.pt1{display:flex;align-items:center;gap:10px;min-width:0}.pt1 .av{width:34px;height:34px;font-size:12px}.pt1 small{display:block;color:var(--mu);font-size:12.5px}.pt1 b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fc{border:1.5px solid var(--bd);background:var(--card);border-radius:99px;padding:6px 14px;font-weight:600;font-size:13px;display:flex;gap:6px;align-items:center}.fc b{background:var(--n);border-radius:99px;min-width:22px;text-align:center;padding:0 6px;font-size:12px}
+.fc:hover{background:var(--row)}.fc.on{background:var(--side);border-color:var(--side);color:#fff}.fc.on b{background:rgba(255,255,255,.2)}.fc.hot b{background:#D93A2B;color:#fff}
+/* tasks */
+.tk{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 0;border-top:1px solid var(--bd)}.tk:first-child{border-top:none}.tk b{display:block;font-weight:600}.tk small{display:block;color:var(--mu);font-size:12.5px}.tk.dn b{text-decoration:line-through;color:var(--mu)}.tk .bt2{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;align-items:center}.tk .pls{display:flex;gap:6px;flex-wrap:wrap;margin-top:5px}
+.own{font-size:11.5px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--n);color:var(--nt)}.own.nurse{background:#E7E0F7;color:#4B2E9A}.own.doctor{background:var(--b);color:var(--bt)}.own.coord{background:var(--a);color:var(--at)}
+.sub2{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--mu);margin:14px 0 2px}
+/* patients */
+.pl{display:grid;grid-template-columns:minmax(280px,330px) minmax(0,1fr);gap:16px;align-items:start}
+.plc{position:sticky;top:84px;max-height:calc(100vh - 100px);overflow:auto}
+.pr{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;cursor:pointer;border:none;background:none;width:100%;text-align:left}.pr:hover{background:var(--row)}.pr.sel{background:var(--row);box-shadow:inset 3px 0 0 var(--pr)}
+.pr .av{width:36px;height:36px;font-size:12px}.pr>div{flex:1;min-width:0}.pr b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pr small{display:block;color:var(--mu);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pfw{display:flex;flex-direction:column;gap:16px;min-width:0}
+.pfh{display:flex;gap:16px;align-items:center;flex-wrap:wrap}.pfh .av{width:54px;height:54px;font-size:18px}.pfh h2{margin:0;font-size:22px;font-weight:800}.pfh p{margin:2px 0 0;color:var(--mu)}.pfh .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.pfh .acts{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.pf{display:grid;grid-template-columns:minmax(300px,350px) minmax(0,1fr);gap:16px;align-items:start}
+.tbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}.tbar select{height:38px;flex:1;min-width:130px}
+.vbtn{height:38px;padding:0 12px;border-radius:10px;border:1.5px solid var(--bd);background:var(--card);font-weight:600;display:flex;gap:6px;align-items:center;white-space:nowrap}.vbtn.on{background:var(--side);border-color:var(--side);color:#fff}
+.phone{background:#101820;border-radius:42px;padding:9px;max-width:330px;margin:0 auto;position:relative}
+.scr{background:var(--chat);border-radius:34px;overflow:hidden;display:flex;flex-direction:column;height:600px}
+.sb{display:flex;justify-content:space-between;padding:12px 26px 6px;font-size:12px;font-weight:700;background:var(--phh);color:#10272E}
+.notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:110px;height:24px;background:#101820;border-radius:0 0 16px 16px;z-index:2}
+.wh{display:flex;align-items:center;gap:8px;padding:8px 10px 10px;background:var(--phh);color:#10272E}.wh b{display:flex;align-items:center;gap:4px;font-size:15px}.wh small{display:block;font-size:11.5px;opacity:.75}.wh>div{flex:1;min-width:0}
+.chat{flex:1;overflow-y:auto;overflow-x:hidden;overflow-wrap:anywhere;padding:12px 10px;display:flex;flex-direction:column;gap:6px}
+.m{max-width:88%;padding:8px 10px 6px;border-radius:10px;background:var(--bub);color:var(--tx);box-shadow:0 1px 1px rgba(0,0,0,.12);align-self:flex-start;white-space:pre-line;font-size:14px;border-top-left-radius:2px}
+.m small{float:right;margin:6px 0 0 12px;font-size:10.5px;color:var(--mu)}.m small u{text-decoration:none;color:#34A0E8;margin-left:3px}
+.m.pt{align-self:flex-end;background:var(--out);border-radius:10px;border-top-right-radius:2px}.m.sys{align-self:center;background:var(--bd);font-size:11.5px;color:var(--mu);box-shadow:none;padding:4px 10px;text-align:center}
+.vb{display:flex;align-items:center;gap:8px;margin-bottom:4px}.vp{width:28px;height:28px;border-radius:50%;background:#12A150;color:#fff;display:grid;place-items:center;font-size:11px;flex:none}.wave{display:flex;align-items:center;gap:2px;height:22px}.wave i{width:3px;border-radius:2px;background:#8FB79A}.vd{font-size:11px;color:var(--mu)}
+.vt{font-size:12.5px;color:var(--mu)}.vt::before{content:"Transcript · ";font-weight:700;font-style:normal}
+.qr{width:88%;align-self:flex-start;display:flex;flex-direction:column;gap:5px}
+.qr button{border:none;background:var(--bub);color:var(--ql);border-radius:8px;padding:9px 8px;text-align:center;font-size:14px;box-shadow:0 1px 1px rgba(0,0,0,.12)}.qr button:hover{filter:brightness(.96)}
+.em{margin:auto;text-align:center;color:var(--mu);font-size:13px;max-width:210px}
+.inb{display:flex;align-items:center;gap:8px;padding:8px 10px 12px;min-width:0}.inb div{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:var(--bub);border-radius:22px;padding:0 12px;color:var(--mu)}
+.inb input{flex:1;min-width:0;border:none;background:none;height:40px;outline-offset:6px}.inb input:disabled{opacity:.6}
+.snd{width:42px;height:42px;border-radius:50%;border:none;background:#12A150;color:#fff;display:grid;place-items:center}.snd:disabled{opacity:.5;cursor:not-allowed}
+.safe{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:12.5px;color:var(--gt);background:var(--g);border-radius:10px;padding:9px 11px}
+.info{display:flex;gap:10px;background:var(--b);color:var(--bt);border-radius:10px;padding:12px 14px;font-size:13.5px;margin-bottom:14px}
+/* severity */
+.sv1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.sv1 b{font-size:40px;font-weight:800;line-height:1}.sv1 span.o{color:var(--mu);font-weight:600}
+.meter{position:relative;height:10px;border-radius:99px;margin:14px 0 6px;background:linear-gradient(90deg,#9AD18B 0 25%,#F5C452 25% 50%,#EE8B7E 50% 75%,#A8221A 75% 100%)}.meter i{position:absolute;top:-5px;width:4px;height:20px;border-radius:2px;background:var(--tx);transform:translateX(-2px)}
+.mlab{display:grid;grid-template-columns:repeat(4,1fr);font-size:11.5px;color:var(--mu)}
+.brk{margin:12px 0 0;padding:0;list-style:none}.brk li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--bd);font-size:13px}.brk li:first-child{border-top:none}.brk li b{font-weight:600}
+/* timeline */
+.tl{position:relative}.s{display:grid;grid-template-columns:24px 1fr auto;gap:12px;padding:10px 8px;border-radius:10px;position:relative}
+.s:not(:last-child)::before{content:"";position:absolute;left:19px;top:34px;bottom:-10px;width:2px;background:var(--bd)}.s.done:not(:last-child)::before{background:#22A06B}
+.s.cur{background:var(--row)}.s b{display:block;font-size:14.5px;font-weight:600}.s span{font-size:12.5px;color:var(--mu)}.s .rt{text-align:right}.s .rt span{display:block}
+.dot{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--bd);background:var(--card);color:#fff;font-size:12px;font-weight:700;position:relative;z-index:1}
+.s.done .dot{background:#22A06B;border-color:#22A06B}.s.cur .dot{background:var(--pr);border-color:var(--pr)}.s.cur .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.s.alert .dot{background:#D93A2B;border-color:#D93A2B}.s.pend .dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--bd)}
+.ff{width:100%;margin-top:10px;height:42px;border-radius:10px;border:1.5px solid var(--pr);background:var(--card);font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}.ff:disabled{opacity:.45;border-color:var(--bd);cursor:not-allowed}
+/* notes */
+.nt1{border-top:1px solid var(--bd);padding:10px 0}.nt1:first-child{border-top:none;padding-top:0}.nt1 p{margin:0 0 4px;white-space:pre-line}.nt1 small{color:var(--mu);font-size:12px}
+.nf{display:grid;gap:8px;margin-top:12px}
+select,textarea{width:100%;border:1px solid var(--bd);border-radius:10px;background:var(--card);padding:0 12px;height:44px}textarea{height:72px;padding:10px 12px;resize:vertical}
+.go2{height:42px;border:none;border-radius:10px;background:var(--pr);color:#fff;font-weight:700;padding:0 16px}.go2:hover{background:var(--prh)}.go2:disabled{opacity:.5;cursor:not-allowed}
+.rr{border-top:1px solid var(--bd);padding:12px 0}.rr:first-child{border-top:none}.rh{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.rh small{display:block;color:var(--mu);font-size:12.5px}
+.stp{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px}.sp{font-size:12px;padding:3px 10px;border-radius:99px;background:var(--n);color:var(--nt);font-weight:500}.sp.d{background:var(--g);color:var(--gt)}.sp.c{background:var(--a);color:var(--at);font-weight:700;box-shadow:inset 0 0 0 1.5px #F5A800}
+.fg{display:flex;gap:8px;flex-wrap:wrap}
+/* appointments & tables */
+.at{width:100%;border-collapse:collapse;min-width:720px}.at th{text-align:left;font-size:13px;font-weight:600;background:var(--bg);padding:10px 8px}.at th:first-child{border-radius:8px 0 0 8px}.at th:last-child{border-radius:0 8px 8px 0}.at td{padding:12px 8px;border-top:1px solid var(--bd);font-size:13.5px;vertical-align:middle}.at td small{display:block;color:var(--mu);font-size:12.5px}
+.er{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;padding:12px;border-radius:14px;background:#FFF0ED;margin-top:10px}.er:first-child{margin-top:0}.er .bx{width:44px;height:44px;border-radius:12px;background:#D93A2B;color:#fff;display:grid;place-items:center}.er b{display:block}.er small{display:block;color:var(--mu);font-size:12.5px}.er.ok{background:var(--g)}.er.ok .bx{background:var(--pr)}
+/* insights */
+.fn{display:grid;grid-template-columns:minmax(120px,190px) 1fr 64px;gap:12px;align-items:center;padding:7px 0}.fn span{font-size:13.5px;font-weight:500}.fn em{font-style:normal;font-size:12.5px;color:var(--mu);text-align:right}
+.fb{height:32px;border-radius:8px;background:#EEF4EA;position:relative;overflow:hidden}.fb i{display:flex;align-items:center;height:100%;border-radius:8px;background:var(--pr);color:#fff;font-style:normal;font-weight:700;font-size:13px;padding-left:10px;min-width:44px;white-space:nowrap}
+.fn:nth-child(2) .fb i{background:#267A46}.fn:nth-child(3) .fb i{background:#2F8A4F}.fn:nth-child(4) .fb i{background:#3E9B5A}.fn:nth-child(5) .fb i{background:#C98A00}
+.fnote{margin-top:12px;font-size:13px;color:var(--mu);background:var(--row);border-radius:10px;padding:10px 12px}
+.rv{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:10px 0;border-top:1px solid var(--bd)}.rv:first-child{border-top:none}.rv b{font-weight:600}.rv small{grid-column:1/-1;color:var(--mu);font-size:12.5px}.rv strong{font-size:16px}
+.rtot{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:12px;border-top:2px solid var(--tx)}.rtot strong{font-size:24px;font-weight:800}
+.st3{display:grid;grid-template-columns:1fr 1fr;gap:10px}.st3 div{background:var(--bg);border-radius:12px;padding:12px}.st3 b{display:block;font-size:22px;font-weight:800}.st3 small{color:var(--mu);font-size:12.5px}
+.cp{border-top:1px solid var(--bd);padding:12px 0}.cp:first-child{border-top:none;padding-top:0}.cp .rh b{font-size:14.5px}
+.cbar{display:flex;height:10px;border-radius:99px;overflow:hidden;margin:8px 0 4px;background:var(--n)}.cbar i{background:var(--pr)}
+.cleg{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--mu)}.cleg span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;background:var(--pr)}.cleg span.x::before{background:#D9CFB2}
+/* settings */
+.rule{display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:11px 0;border-top:1px solid var(--bd);align-items:start}.rule:first-child{border-top:none}.rule b{display:block;font-weight:600}.rule small{color:var(--mu);font-size:12.5px}.rule .ri{color:var(--pr);padding-top:1px}
+.lock{font-size:11.5px;font-weight:700;color:var(--gt);background:var(--g);border-radius:6px;padding:3px 8px;white-space:nowrap}
+.tg{position:relative;width:44px;height:26px;border-radius:99px;background:#CFC6AA;border:none;padding:0;flex:none}.tg::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}.tg[aria-checked=true]{background:var(--pr)}.tg[aria-checked=true]::after{left:21px}
+.band{display:grid;grid-template-columns:120px 90px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--bd);align-items:center;font-size:13.5px}.band:first-child{border-top:none}
+.lg{max-height:520px;overflow-y:auto}.l1{display:grid;grid-template-columns:12px 88px 1fr;gap:8px;padding:9px 0;font-size:13px;border-top:1px solid var(--bd)}.l1:first-child{border:none}
+.l1 i{width:8px;height:8px;border-radius:50%;margin-top:6px}.l1 time{color:var(--mu)}.l1 b{display:block;font-weight:600}.l1 span{color:var(--mu);font-size:12.5px}
+.fr{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;margin-bottom:12px}.fr label{font-weight:500}
+.go{width:100%;height:46px;border:none;border-radius:12px;background:#F5A800;color:#000;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px}.go:hover{background:#FFB91F}
+dialog{border:none;border-radius:16px;padding:22px;max-width:480px;width:calc(100% - 32px);background:var(--card);color:var(--tx)}dialog::backdrop{background:rgba(5,20,25,.55)}
+dialog h3{margin:0 0 10px;font-size:18px}dialog .row{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}dialog .row button{flex:1;min-width:130px;height:42px;border-radius:10px;border:1.5px solid var(--bd);background:var(--card);font-weight:600}dialog .row .p{background:var(--pr);border-color:var(--pr);color:#fff}dialog .row .e{background:#D93A2B;border-color:#D93A2B;color:#fff}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#10272E;color:#fff;padding:11px 18px;border-radius:10px;font-weight:500;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:calc(100% - 32px)}.toast[hidden]{display:none}
+.toast button{margin-left:14px;background:#F5A800;color:#000;border:none;border-radius:6px;padding:3px 12px;font-weight:700}
+.flash{animation:fl 1.2s}@keyframes fl{0%,60%{box-shadow:0 0 0 4px #F5A800}100%{box-shadow:0 0 0 0 transparent}}
+/* urgent banner */
+.ub1{display:flex;align-items:center;gap:14px;background:#D93A2B;color:#fff;border-radius:16px;padding:14px 18px;margin-bottom:12px;box-shadow:0 10px 26px rgba(217,58,43,.35);flex-wrap:wrap}.ub1.crit{background:#8E1B14}
+#urg{margin-bottom:6px}.ubm{display:block;width:100%;margin:-4px 0 12px;border:1.5px dashed #E8A59C;background:#FFF0ED;color:var(--rt);font-weight:700;border-radius:12px;padding:9px}.ubm:hover{background:#FFE4DF}#urg[hidden]{display:none}
+.ub1 .uic{width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.2);display:grid;place-items:center;flex:none}
+.ub1 .ut{flex:1;min-width:240px}.ub1 .ut>b:first-child{display:block;font-size:18px;font-weight:800;letter-spacing:.01em}.ub1 .ut span{display:block;font-size:15px;font-weight:600}.ub1 .ut small{display:block;font-size:13px;opacity:.95}
+.ub1 .ua{display:flex;gap:8px;flex-wrap:wrap}.ub1 .ua button{height:40px;padding:0 16px;border-radius:10px;border:2px solid #fff;background:transparent;color:#fff;font-weight:700}.ub1 .ua button.w{background:#fff;color:#A8221A}.ub1 .ua button:hover{filter:brightness(.95)}
+.view[hidden]{display:none}
+@media(prefers-reduced-motion:reduce){.flash{animation:none;outline:3px solid #F5A800}html{scroll-behavior:auto}.pill.u{animation:none}*{transition:none!important}}
+@media(max-width:1300px){.pf{grid-template-columns:1fr}.pf .phone{max-width:330px}}
+@media(max-width:1100px){.kp{grid-template-columns:repeat(2,minmax(0,1fr))}.g2,.g2e{grid-template-columns:1fr}}
+@media(max-width:980px){.pl{grid-template-columns:1fr}.plc{position:static;max-height:340px}}
+@media(max-width:900px){.rsel{display:flex}.rsel+.ib{margin-left:0}.side{display:none}.mnav{display:flex;top:0}.top{position:static}.top,.pg{padding-left:16px;padding-right:16px}.pw{display:none}}
+@media(max-width:640px){.hosp small{display:none}.hosp b{font-size:15px}.rsel span{display:none}.rsel select{min-width:0}h1{font-size:24px}.tr{grid-template-columns:1fr auto}.tr>div:nth-child(2),.tr>div:nth-child(3){grid-column:1/-1}.tr.hd{display:none}.fn{grid-template-columns:1fr 54px}.fn .fb{grid-column:1/-1;grid-row:2}.band{grid-template-columns:1fr auto}.band span:last-child{grid-column:1/-1}.st3{grid-template-columns:1fr}.bar .rb span.t{display:none}}
+@media(max-width:520px){.kp{grid-template-columns:1fr}}
+
+/* sign-in overlay */
+#lo{position:fixed;inset:0;z-index:200;overflow:auto;background:var(--bg) radial-gradient(900px 340px at 85% -80px,var(--glow),transparent) no-repeat}#lo[hidden]{display:none}
+#lo .lo-wrap{display:grid;grid-template-columns:minmax(320px,5fr) 6fr;min-height:100%}
+#lo .lo-side{background:var(--side);color:#fff;padding:40px 44px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+#lo .lo-brand{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:700;letter-spacing:-.01em}
+#lo .lo-side h1{font-size:34px;line-height:1.15;margin:0 0 14px;font-weight:800;letter-spacing:-.02em;max-width:16ch}
+#lo .lo-side p{margin:0;color:#B9CFCB;font-size:15px;max-width:40ch}
+#lo .lo-net{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+#lo .lo-net li{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;background:var(--sideh);font-weight:600;font-size:13.5px}
+#lo .lo-net li i{width:8px;height:8px;border-radius:50%;background:#F5A800;flex:none}
+#lo .lo-main{display:flex;align-items:center;justify-content:center;padding:32px 24px}
+#lo .lo-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:34px 32px;box-shadow:0 18px 40px -22px rgba(11,42,51,.35)}
+#lo .lo-card h2{margin:0 0 4px;font-size:24px;font-weight:800;letter-spacing:-.01em}
+#lo .lo-sub{margin:0 0 22px;color:var(--mu)}
+#lo label{display:block;font-weight:600;margin:0 0 6px}
+#lo .lo-f{margin-bottom:16px}
+#lo .lo-in{width:100%;height:46px;border:1.5px solid var(--bd);border-radius:12px;background:#FFFDF6;padding:0 14px}
+#lo .lo-in:focus{outline:none;border-color:var(--pr);box-shadow:0 0 0 3px rgba(30,107,58,.15)}
+#lo select.lo-in{appearance:none;-webkit-appearance:none;padding-right:40px;background:#FFFDF6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23556A6E' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center}
+#lo .lo-pw{position:relative}#lo .lo-pw .lo-in{padding-right:64px}
+#lo .lo-show{position:absolute;right:6px;top:6px;height:34px;padding:0 10px;border:0;background:none;color:var(--pr);font-weight:600;border-radius:8px}
+#lo .lo-go{width:100%;height:48px;border:0;border-radius:12px;background:var(--pr);color:#fff;font-weight:700;font-size:15px;margin-top:4px}
+#lo .lo-go:hover{background:var(--prh)}
+#lo .lo-err{display:none;background:var(--r);color:var(--rt);border-radius:10px;padding:10px 12px;margin-bottom:16px;font-weight:600}#lo .lo-err.lo-on{display:block}
+#lo .lo-demo{margin-top:20px;padding:12px 14px;border-radius:12px;background:var(--row);color:var(--mu);font-size:13px;display:flex;align-items:center;gap:10px;justify-content:space-between}
+#lo .lo-demo b{color:var(--tx)}
+#lo .lo-demo button{border:1.5px solid var(--pr);background:none;color:var(--pr);font-weight:700;border-radius:9px;padding:6px 12px;white-space:nowrap}
+@media(max-width:820px){#lo .lo-wrap{grid-template-columns:1fr}#lo .lo-side{padding:26px 24px;gap:18px}#lo .lo-side h1{font-size:26px;max-width:none}#lo .lo-net{display:none}}
+</style></head><body>
+<div id="lo" hidden>
+<div class="lo-wrap">
+  <aside class="lo-side">
+    <div><div class="lo-brand" id="lo_brand"></div></div>
+    <div>
+      <h1>The AI hospital CRM that brings patients back.</h1>
+      <p>Automated WhatsApp and voice follow-ups, early warning on emergencies, and more repeat visits — with less work for your care team.</p>
+    </div>
+    <ul class="lo-net" id="lo_net"></ul>
+  </aside>
+  <main class="lo-main">
+    <div class="lo-card">
+      <h2>Welcome back</h2>
+      <p class="lo-sub">Sign in to continue to CareGraph.</p>
+      <div class="lo-err" id="lo_err" role="alert"></div>
+      <form id="lo_f" novalidate>
+        <div class="lo-f"><label for="lo_h">Hospital</label><select class="lo-in" id="lo_h" required></select></div>
+        <div class="lo-f"><label for="lo_r">Your role</label><select class="lo-in" id="lo_r"></select></div>
+        <div class="lo-f"><label for="lo_u">Username</label><input class="lo-in" id="lo_u" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>
+        <div class="lo-f"><label for="lo_p">Password</label><div class="lo-pw"><input class="lo-in" id="lo_p" type="password" autocomplete="current-password" required><button type="button" class="lo-show" id="lo_sh" aria-label="Show password">Show</button></div></div>
+        <button class="lo-go" id="lo_go" type="button">Sign in</button>
+      </form>
+      <div class="lo-demo"><span>Demo access: <b id="lo_du"></b> / <b id="lo_dp"></b></span><button type="button" id="lo_fill">Use it</button></div>
+    </div>
+  </main>
+</div>
+</div>
+
+<div class="app">
+<aside class="side"><div class="brand" id="brand"></div>
+<nav aria-label="Main" id="nav"></nav>
+<div class="tag">Better follow-ups. More repeat visits.<small>AI-powered hospital CRM</small></div>
+<div class="sf"><div><span class="sq" data-ic="hosp" data-s="22"></span><span><span class="hn"></span><small>Cardiology</small></span></div>
+<div><span class="av" id="sav"></span><span style="flex:1"><span id="snm"></span><small id="srl"></small></span></div></div></aside>
+<div class="main">
+<header class="top">
+<div class="hosp"><span class="hq" data-ic="hosp" data-s="22"></span><div><b class="hn"></b><small>Cardiology department</small></div></div>
+<div class="pw"><span>Powered by</span><span class="cgl" id="pwl"></span></div>
+<label class="rsel"><span>View as</span><select id="role" aria-label="View dashboard as role"></select></label>
+<button class="ib" id="bell" aria-label="Urgent alerts"><span data-ic="bell" data-s="22"></span><b id="bd"></b></button><span class="av" id="tav"></span></header>
+<nav class="mnav" id="mnav" aria-label="Sections"></nav>
+<div class="pg">
+<div class="bar"><div class="sw"><span data-ic="search" data-s="18"></span><input id="q" placeholder="Search patients by name, ID or phone…" aria-label="Search patients" autocomplete="off"><div class="sr" id="sr" hidden></div></div><span class="sp2"></span>
+<button class="rb" id="rs" title="Reset demo"><span data-ic="reset" data-s="18"></span><span class="t">Reset demo</span></button><button class="rb" id="so">Sign out</button><button class="pb" data-a="ehr"><span data-ic="plus"></span>Hospital event</button></div>
+<div id="urg" hidden role="alert"></div>
+
+<!-- HOME -->
+<section class="view" id="v-home">
+<div class="h1r"><div><h1 id="hello"></h1><p id="hsub"></p></div><div class="date" title="Today's date"><span data-ic="cal"></span><span id="dd"></span></div></div>
+<div class="kp" id="kp"></div>
+<div class="g2">
+<section class="card"><div class="ch"><span class="bx" style="background:var(--b);color:var(--bt)" id="hwi"></span><div><h2 id="hwt"></h2><p id="hws"></p></div><button class="lnk" id="hwl"></button></div><div id="hwork"></div></section>
+<section class="card"><div class="ch"><span class="bx" style="background:var(--g);color:var(--gt)" data-ic="check" data-s="22"></span><div><h2 id="htt"></h2><p id="hts"></p></div><button class="lnk" data-go="tasks">All tasks <span data-ic="right" data-s="14"></span></button></div><div id="htasks"></div></section>
+</div></section>
+
+<!-- PATIENTS -->
+<section class="view" id="v-patients" hidden>
+<div class="h1r"><div><h1>Patients</h1><p id="psub">Every patient's file, conversation and journey in one place</p></div></div>
+<div class="pl">
+<section class="card plc"><div class="fl" id="pfl" role="group" aria-label="Filter patients"></div><div id="plist"></div></section>
+<div class="pfw">
+<section class="card" id="pfh"></section>
+<div class="pf">
+<section class="card" id="pvc"><div class="ch"><span class="bx" style="background:#25D366;color:#fff" data-ic="msg" data-s="22"></span><div><h2>Conversation</h2><p>AI follow-up on WhatsApp &amp; voice</p></div></div>
+<div class="tbar"><span data-ic="globe" data-s="18" style="color:var(--mu)"></span><select id="lang" aria-label="Patient language"></select><button class="vbtn" id="vbtn" aria-pressed="false"><span data-ic="mic" data-s="16"></span><span id="vbt">Voice call</span></button></div>
+<div class="phone"><div class="notch"></div><div class="scr"><div class="sb"><span>9:41</span><span>●●● ▮</span></div>
+<div class="wh"><span data-ic="left" data-s="22"></span><span id="pl"></span><div><b>CareGraph <svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#12A150"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></b><small class="hn"></small></div><span data-ic="phone"></span><span data-ic="more"></span></div>
+<div class="chat" id="chat" aria-live="polite"></div>
+<div class="inb"><div><span data-ic="smile"></span><input id="tx" placeholder="Type as the patient…" aria-label="Reply as patient" autocomplete="off"><span data-ic="clip"></span></div><button class="snd" id="sd" aria-label="Send"><span data-ic="send" data-s="20"></span></button></div></div></div>
+<div class="safe"><span data-ic="shield" data-s="16"></span><span>AI safety rules on: never tells a patient they are fine, always escalates red-flag symptoms, always gives 108 for emergencies.</span></div></section>
+<div class="c2">
+<section class="card" id="sevc"><div class="ch"><span class="bx" style="background:var(--r);color:var(--rt)" data-ic="warn" data-s="22"></span><div><h2>Severity score</h2><p>From the AI symptom check</p></div></div><div id="sev"></div></section>
+<section class="card" id="tlc"><div class="ch"><span class="bx" style="background:var(--b);color:var(--bt)" data-ic="share" data-s="22"></span><div><h2>Journey</h2><p id="tls"></p></div></div><div class="tl" id="tl"></div><button class="ff" id="ff"><span data-ic="ff" data-s="16"></span><span id="fft"></span></button></section>
+<section class="card" id="notec"><div class="ch"><span class="bx" style="background:var(--a);color:var(--at)" data-ic="note" data-s="22"></span><div><h2>Notes on file</h2><p>Shared with the care team and admins</p></div></div><div id="nl"></div>
+<div class="nf"><select id="nto" aria-label="Attach note to"></select><textarea id="nin" placeholder="Add a note for the team…" aria-label="Note text"></textarea><button class="go2" id="nadd">Add note</button></div></section>
+<section class="card" id="labc"><div class="ch"><span class="bx" style="background:var(--g);color:var(--gt)" data-ic="doc" data-s="22"></span><div><h2>Test results</h2><p>Has the doctor seen it? Does the patient know?</p></div></div><div id="rl"></div></section>
+</div></div></div></div></section>
+
+<!-- APPOINTMENTS -->
+<section class="view" id="v-appts" hidden>
+<div class="h1r"><div><h1>Appointments</h1><p>Follow-ups booked by CareGraph, plus emergency requests from patients</p></div></div>
+<div class="kp" id="apk"></div>
+<section class="card" style="margin-bottom:16px"><div class="ch"><span class="bx" style="background:var(--r);color:var(--rt)" data-ic="amb" data-s="24"></span><div><h2>Emergency requests</h2><p>Ambulance to home and priority Emergency OPD slots</p></div></div><div id="eml"></div></section>
+<section class="card"><div class="ch"><span class="bx" style="background:var(--b);color:var(--bt)" data-ic="cal" data-s="22"></span><div><h2>Follow-up appointments</h2><p>Booked by patients on WhatsApp, written back to the hospital system</p></div></div><div class="sc" id="apl"></div></section>
+</section>
+
+<!-- TASKS -->
+<section class="view" id="v-tasks" hidden>
+<div class="h1r"><div><h1>Tasks</h1><p id="tsub"></p></div></div>
+<section class="card"><div class="fl" id="tfl" role="group" aria-label="Filter tasks"></div><div id="tall"></div></section>
+</section>
+
+<!-- INSIGHTS -->
+<section class="view" id="v-insights" hidden>
+<div class="h1r"><div><h1>Insights</h1><p>How patient engagement turns into repeat visits and hospital revenue</p></div><span class="pill n">October 2026 · demo figures + live demo activity</span></div>
+<div class="kp" id="ik"></div>
+<div class="g2e" style="margin-bottom:16px">
+<section class="card"><div class="ch"><span class="bx" style="background:var(--g);color:var(--gt)" data-ic="funnel" data-s="22"></span><div><h2>Engagement to revenue funnel</h2><p>From discharge to repeat visit</p></div></div><div id="fun"></div></section>
+<section class="card"><div class="ch"><span class="bx" style="background:var(--a);color:var(--at)" data-ic="rupee" data-s="22"></span><div><h2>Revenue from follow-ups</h2><p>Visits and procedures that started with a CareGraph follow-up</p></div></div><div id="rev"></div></section>
+</div>
+<div class="g2e">
+<section class="card"><div class="ch"><span class="bx" style="background:var(--b);color:var(--bt)" data-ic="clock" data-s="22"></span><div><h2>Staff workload &amp; safety</h2><p>What automation took off the team's plate</p></div></div><div id="auto"></div></section>
+<section class="card"><div class="ch"><span class="bx" style="background:#E7E0F7;color:#4B2E9A" data-ic="mega" data-s="22"></span><div><h2>New patient campaigns</h2><p>Outbound outreach to people who have given consent</p></div></div><div id="camp"></div></section>
+</div></section>
+
+<!-- INTEGRATIONS -->
+<section class="view" id="v-integ" hidden>
+<div class="h1r"><div><h1>Integrations</h1><p>Hospital systems and patient channels</p></div><button class="pb" data-a="ehr"><span data-ic="play" data-s="16"></span>Simulate hospital event</button></div>
+<div class="kp" id="chn"></div>
+<section class="card"><div class="ch"><span class="bx" style="background:var(--b);color:var(--bt)" data-ic="doc" data-s="22"></span><div><h2>Event log</h2><p>All journey events in real time</p></div><button class="lnk" id="vl">View all <span data-ic="right" data-s="14"></span></button></div><div class="lg" id="lg"></div></section>
+</section>
+
+<!-- SETTINGS -->
+<section class="view" id="v-settings" hidden>
+<div class="h1r"><div><h1>Settings</h1><p>AI safety, automated messages and escalation rules</p></div></div>
+<div class="g2e" style="margin-bottom:16px">
+<section class="card"><div class="ch"><span class="bx" style="background:var(--g);color:var(--gt)" data-ic="shield" data-s="22"></span><div><h2>AI medical safety rules</h2><p>Always on · cannot be switched off</p></div></div><div id="safe"></div></section>
+<section class="card"><div class="ch"><span class="bx" style="background:#25D366;color:#fff" data-ic="msg" data-s="22"></span><div><h2>Automated messages</h2><p>Sent on WhatsApp (or voice) in the patient's language</p></div></div><div id="amsg"></div></section>
+</div>
+<section class="card"><div class="ch"><span class="bx" style="background:var(--r);color:var(--rt)" data-ic="warn" data-s="22"></span><div><h2>Severity scoring &amp; escalation</h2><p>How patient answers become a 0–100 score and who is alerted</p></div></div><div id="bands"></div></section>
+</section>
+</div></div></div>
+
+<dialog id="dlg"></dialog>
+<dialog id="ehrd"><h3>Simulate a hospital event</h3>
+<div class="info"><span data-ic="info"></span><span>These events normally arrive from your EHR/HIS. Admission and discharge trigger automatic WhatsApp messages.</span></div>
+<div class="fr"><label for="ep">Patient</label><select id="ep"></select></div>
+<div class="fr"><label for="et">Event</label><select id="et"><option value="PatientAdmitted">Patient admitted</option><option value="PatientDischarged">Patient discharged</option><option value="FollowUpRecommended">Follow-up advised by doctor</option><option value="AppointmentMissed">Missed appointment</option><option value="TestOrdered">Test ordered</option><option value="LabResultAvailable">Test result ready</option></select></div>
+<div class="fr" style="align-items:start"><label for="ed" style="padding-top:10px">Details</label><textarea id="ed"></textarea></div>
+<div class="row"><button class="p" id="send">Send to CareGraph</button><button data-a="ehrx">Cancel</button></div></dialog>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ---------- session ---------- */
+let SESSION=null;
+try{SESSION=JSON.parse(sessionStorage.getItem("cg_session")||"null")}catch(_){}
+if(!SESSION&&window.name.startsWith("cg_session:")){try{SESSION=JSON.parse(window.name.slice(11))}catch(_){}}
+if(!SESSION&&location.hash.indexOf("#s=")===0){try{SESSION=JSON.parse(decodeURIComponent(location.hash.slice(3)));try{history.replaceState(null,"",location.pathname+location.search)}catch(_){}}catch(_){}}
+const NEED=!SESSION;
+const saveSess=()=>{if(!SESSION)return;const s=JSON.stringify(SESSION);try{sessionStorage.setItem("cg_session",s)}catch(_){}window.name="cg_session:"+s};
+
+/* ---------- helpers ---------- */
+const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const IC={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',share:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',check:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',plug:'<path d="M9 2v6M15 2v6"/><path d="M6 8h12v4a6 6 0 0 1-12 0z"/><path d="M12 18v4"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>',search:'<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/>',bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',plus:'<path d="M12 5v14M5 12h14"/>',right:'<path d="M9 18l6-6-6-6"/>',left:'<path d="M15 18l-6-6 6-6"/>',info:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',warn:'<path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/>',ok:'<path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4L12 14l-3-3"/>',play:'<path d="M5 3l14 9-14 9z" fill="currentColor"/>',ff:'<path d="M13 19l9-7-9-7zM2 19l9-7-9-7z"/>',hosp:'<rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M12 8v6M9 11h6"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',msg:'<path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2-5.4A8.5 8.5 0 1 1 21 11.5z"/>',phone:'<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',more:'<circle cx="12" cy="5" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="12" cy="19" r="1.2"/>',smile:'<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',clip:'<path d="M21.4 11l-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',reset:'<path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/>',shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',mic:'<rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3"/>',globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>',note:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',trend:'<path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/>',mega:'<path d="M3 11v3a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6M19 6a7 7 0 0 1 0 12"/>',amb:'<path d="M1 6h13v11H1zM14 10h4l4 4v3h-8z"/><circle cx="5.5" cy="18" r="2"/><circle cx="18.5" cy="18" r="2"/><path d="M7.5 8.5v5M5 11h5"/>',clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',funnel:'<path d="M3 4h18l-7 8v6l-4 2v-8z"/>',rupee:'<path d="M6 4h12M6 9h12M9 4c4 0 6 2 6 5s-2 5-6 5H6l8 7"/>'};
+const ic=(n,s=20)=>`<svg class="ic" width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
+const LOGO=s=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4c7 3 9 12 4 18-3-4-6-9-4-18z" fill="#F5A800"/><path d="M6 12c8-1 14 4 12 14-8 0-14-5-12-14z" fill="#3E9B3F"/><path d="M34 18c2 9-5 17-16 16 0-9 7-16 16-16z" fill="#F5A800" opacity=".9"/><path d="M12 20c6 0 10 4 8 12-6 0-10-4-8-12z" fill="#1E6B3A"/></svg>`;
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],DAY=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],pad=n=>String(n).padStart(2,"0");
+const tm=d=>d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}),dt=d=>d.getDate()+" "+MON[d.getMonth()]+", "+pad(d.getHours())+":"+pad(d.getMinutes()),dl=d=>DAY[d.getDay()]+", "+d.getDate()+" "+MON[d.getMonth()]+" "+d.getFullYear();
+const sod=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate()),D=(m,d,h=9,mi=0)=>new Date(2026,m,d,h,mi),later=(a,b)=>a>b?a:b;
+const ago=t=>{if(!t)return"";const m=Math.max(0,Math.round((Date.now()-t)/6e4));return m<1?"just now":m<60?m+" min ago":m<1440?Math.floor(m/60)+" hr ago":Math.floor(m/1440)+" day ago"};
+const mmss=ms=>{ms=Math.max(0,Math.round(ms/1000));return Math.floor(ms/60)+":"+pad(ms%60)};
+const inr=n=>n>=1e7?"₹"+(n/1e7).toFixed(2)+" Cr":n>=1e5?"₹"+(n/1e5).toFixed(1)+" L":"₹"+Math.round(n).toLocaleString("en-IN");
+const num=n=>Math.round(n).toLocaleString("en-IN"),pct=(a,b)=>b?Math.round(a/b*100)+"%":"—";
+
+/* ---------- roles & views ---------- */
+const ROLES={coord:{label:"Care Coordinator",name:"Sarah Chen",ini:"SC"},nurse:{label:"Nurse",name:"Lakshmi Rao",ini:"LR"},doctor:{label:"Doctor",name:"Dr. S. Nair",ini:"SN"},admin:{label:"Hospital Admin",name:"Vikram Mehta",ini:"VM"}};
+const VIEWS=[["home","home","Home"],["patients","users","Patients"],["appts","cal","Appointments"],["tasks","check","Tasks"],["insights","trend","Insights"],["integ","plug","Integrations"],["settings","gear","Settings"]];
+const NAVR={coord:["home","patients","appts","tasks","insights","integ"],nurse:["home","patients","appts","tasks"],doctor:["home","patients","appts","tasks"],admin:["home","patients","appts","tasks","insights","integ","settings"]};
+let ROLE=(SESSION&&ROLES[SESSION.role])?SESSION.role:"coord";
+const me=()=>ROLES[ROLE],meTag=()=>me().name+" ("+me().label+")";
+let HN="Arogya Demo Hospital";
+
+/* ---------- languages: AI message templates ---------- */
+const LANGS={en:"English",hi:"हिन्दी · Hindi",kn:"ಕನ್ನಡ · Kannada"},LN={en:"English",hi:"Hindi",kn:"Kannada"};
+const TX={
+en:{greet:"Hi {n}! 👋 This is CareGraph from {h}.\nHow are you feeling today after your discharge?",
+admit:"Welcome to {h}, {n}. 🙏\nWe'll share updates and your discharge instructions here on WhatsApp.\nReply STOP anytime to opt out.",
+disch:"You were discharged today, {n}. Wishing you a smooth recovery.\nWe'll check in with you tomorrow. Your doctor has advised a follow-up visit in 4 weeks.",
+askPain:"I'm sorry to hear that. On a scale of 0 to 10, how bad is your pain right now?\n(0 = no pain, 10 = worst pain you can imagine)",
+askSym:"Thank you. Do you have any of these right now?\n• Chest pain or pressure\n• Shortness of breath\n• Fever\n• Dizziness\n• Bleeding from the wound",
+offer:"Thanks for letting us know. If anything changes — pain, fever or breathlessness — reply here anytime.\nYour doctor advised a follow-up in 4 weeks. Would you like to book now?",
+offer2:"Would you like to book your follow-up visit now?",
+slots:"Here are the earliest slots. Tap one to book.",
+booked:"✅ Booked: {s}. We'll remind you the day before.",
+later:"No problem. I'll check in again closer to your follow-up date.",
+low:"Thank you for telling me. I've added this to your record and your care team will see it.\nI can't judge how serious symptoms are — if the pain increases or you get fever, chest pain or breathlessness, reply here or call 108.",
+mod:"Thank you. I've shared this with your care team and a nurse will call you today.\nIf you get chest pain, trouble breathing or the pain gets much worse, call 108 straight away.",
+high:"I've marked this URGENT and sent it to your care team. A nurse will call you within 15 minutes.\nIf it gets worse, call 108. You can also choose an option below.",
+crit:"⚠️ Your symptoms need medical attention now. I've alerted the hospital's emergency team.\nIf you have severe chest pain or can't breathe, call 108 immediately.\nChoose an option below:",
+amb:"🚑 Ambulance requested to your registered home address. The emergency team will call you on {ph} to confirm. Keep your phone close. If anything changes, call 108.",
+ambGo:"🚑 The ambulance is on the way — about 18 minutes. The crew will call you when they arrive.",
+opd:"🏥 Priority token {t} booked at the Emergency OPD, Main Campus. Please come now and show this message at the desk. Don't drive yourself.",
+wait:"Okay. A nurse will call you shortly. If it gets worse before then, call 108.",
+stop:"You've been unsubscribed from automated messages from {h}. Reply START to resume.\nFor emergencies, call 108.",
+start:"Welcome back! Automated follow-up messages are on again.",
+safeQ:"I'm not able to tell whether you're okay — only a doctor or nurse can judge that. I've asked a nurse to call you today.\nIf you have chest pain, trouble breathing or feel much worse, call 108.",
+remind:"⏰ Reminder: your appointment is tomorrow, {s}. Reply if you need to reschedule.",
+missed:"We missed you at your appointment. Would you like to reschedule?",
+clarify:"Sorry, I didn't understand. Are you feeling better, the same, or worse?",
+painNum:"Please reply with a number from 0 to 10.",
+fwd:"Thanks, I've passed your message to your care team."},
+hi:{greet:"नमस्ते {n}! 👋 मैं {h} से CareGraph हूँ।\nडिस्चार्ज के बाद आज आप कैसा महसूस कर रहे हैं?",
+admit:"{h} में आपका स्वागत है, {n}। 🙏\nहम आपकी अपडेट और डिस्चार्ज निर्देश यहीं WhatsApp पर भेजेंगे।\nमैसेज बंद करने के लिए कभी भी STOP लिखें।",
+disch:"{n}, आज आपका डिस्चार्ज हुआ है। आपके जल्दी ठीक होने की शुभकामनाएँ।\nहम कल आपसे संपर्क करेंगे। डॉक्टर ने 4 हफ़्ते में फ़ॉलो-अप की सलाह दी है।",
+askPain:"यह सुनकर दुख हुआ। 0 से 10 के पैमाने पर, अभी आपका दर्द कितना है?\n(0 = कोई दर्द नहीं, 10 = सबसे ज़्यादा दर्द)",
+askSym:"धन्यवाद। क्या अभी आपको इनमें से कुछ है?\n• सीने में दर्द या दबाव\n• साँस लेने में तकलीफ़\n• बुख़ार\n• चक्कर आना\n• घाव से ख़ून आना",
+offer:"बताने के लिए धन्यवाद। अगर दर्द, बुख़ार या साँस की तकलीफ़ हो, तो कभी भी यहाँ लिखें।\nडॉक्टर ने 4 हफ़्ते में फ़ॉलो-अप की सलाह दी है। क्या अभी बुक करना चाहेंगे?",
+offer2:"क्या आप अभी अपना फ़ॉलो-अप बुक करना चाहेंगे?",
+slots:"ये सबसे जल्दी उपलब्ध समय हैं। बुक करने के लिए एक चुनें।",
+booked:"✅ बुक हो गया: {s}। हम एक दिन पहले याद दिलाएँगे।",
+later:"कोई बात नहीं। फ़ॉलो-अप की तारीख़ के पास हम फिर संपर्क करेंगे।",
+low:"बताने के लिए धन्यवाद। यह जानकारी आपकी केयर टीम तक पहुँच गई है।\nलक्षण कितने गंभीर हैं, यह मैं तय नहीं कर सकता — दर्द बढ़े या बुख़ार, सीने में दर्द या साँस की तकलीफ़ हो, तो यहाँ लिखें या 108 पर कॉल करें।",
+mod:"धन्यवाद। यह जानकारी केयर टीम को भेज दी गई है, आज एक नर्स आपको कॉल करेंगी।\nसीने में दर्द, साँस की तकलीफ़ हो या दर्द बहुत बढ़ जाए तो तुरंत 108 पर कॉल करें।",
+high:"मैंने इसे URGENT मार्क करके केयर टीम को भेज दिया है। 15 मिनट में एक नर्स आपको कॉल करेंगी।\nहालत बिगड़े तो 108 पर कॉल करें। आप नीचे से कोई विकल्प भी चुन सकते हैं।",
+crit:"⚠️ आपके लक्षणों पर अभी डॉक्टरी ध्यान ज़रूरी है। मैंने अस्पताल की इमरजेंसी टीम को सूचित कर दिया है।\nतेज़ सीने में दर्द हो या साँस न आए तो तुरंत 108 पर कॉल करें।\nनीचे से एक विकल्प चुनें:",
+amb:"🚑 आपके रजिस्टर्ड घर के पते पर एम्बुलेंस का अनुरोध भेज दिया गया है। इमरजेंसी टीम {ph} पर कॉल करके पुष्टि करेगी। फ़ोन पास रखें। हालत बदले तो 108 पर कॉल करें।",
+ambGo:"🚑 एम्बुलेंस रास्ते में है — लगभग 18 मिनट। पहुँचने पर टीम आपको कॉल करेगी।",
+opd:"🏥 इमरजेंसी OPD, मेन कैंपस में प्रायोरिटी टोकन {t} बुक हो गया है। कृपया अभी आएँ और काउंटर पर यह मैसेज दिखाएँ। ख़ुद गाड़ी न चलाएँ।",
+wait:"ठीक है। एक नर्स जल्द ही आपको कॉल करेंगी। उससे पहले हालत बिगड़े तो 108 पर कॉल करें।",
+stop:"{h} के ऑटोमेटेड मैसेज बंद कर दिए गए हैं। फिर से शुरू करने के लिए START लिखें।\nइमरजेंसी में 108 पर कॉल करें।",
+start:"आपका फिर से स्वागत है! फ़ॉलो-अप मैसेज दोबारा चालू हो गए हैं।",
+safeQ:"आप ठीक हैं या नहीं, यह मैं नहीं बता सकता — यह केवल डॉक्टर या नर्स ही तय कर सकते हैं। मैंने आज एक नर्स से आपको कॉल करने को कहा है।\nसीने में दर्द, साँस की तकलीफ़ हो या हालत ज़्यादा ख़राब लगे तो 108 पर कॉल करें।",
+remind:"⏰ याद दिला दें: आपका अपॉइंटमेंट कल है, {s}। समय बदलना हो तो जवाब दें।",
+missed:"आप अपने अपॉइंटमेंट पर नहीं आ पाए। क्या आप नया समय बुक करना चाहेंगे?",
+clarify:"माफ़ कीजिए, मैं समझ नहीं पाया। क्या आप बेहतर, वैसा ही, या ज़्यादा ख़राब महसूस कर रहे हैं?",
+painNum:"कृपया 0 से 10 के बीच कोई संख्या लिखें।",
+fwd:"धन्यवाद, आपका मैसेज केयर टीम तक पहुँचा दिया गया है।"},
+kn:{greet:"ನಮಸ್ಕಾರ {n}! 👋 ನಾನು {h} ನಿಂದ CareGraph.\nಡಿಸ್ಚಾರ್ಜ್ ನಂತರ ಇಂದು ನಿಮಗೆ ಹೇಗೆ ಅನಿಸುತ್ತಿದೆ?",
+admit:"{h} ಗೆ ಸ್ವಾಗತ, {n}. 🙏\nನಿಮ್ಮ ಅಪ್‌ಡೇಟ್‌ಗಳು ಮತ್ತು ಡಿಸ್ಚಾರ್ಜ್ ಸೂಚನೆಗಳನ್ನು ಇಲ್ಲೇ WhatsApp ನಲ್ಲಿ ಕಳುಹಿಸುತ್ತೇವೆ.\nಸಂದೇಶಗಳನ್ನು ನಿಲ್ಲಿಸಲು ಯಾವಾಗ ಬೇಕಾದರೂ STOP ಎಂದು ಕಳುಹಿಸಿ.",
+disch:"{n}, ಇಂದು ನಿಮ್ಮ ಡಿಸ್ಚಾರ್ಜ್ ಆಗಿದೆ. ಬೇಗ ಗುಣಮುಖರಾಗಿ.\nನಾಳೆ ನಾವು ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸುತ್ತೇವೆ. ವೈದ್ಯರು 4 ವಾರಗಳಲ್ಲಿ ಫಾಲೋ-ಅಪ್‌ಗೆ ಸಲಹೆ ನೀಡಿದ್ದಾರೆ.",
+askPain:"ಕೇಳಿ ಬೇಸರವಾಯಿತು. 0 ರಿಂದ 10 ರವರೆಗೆ, ಈಗ ನಿಮ್ಮ ನೋವು ಎಷ್ಟಿದೆ?\n(0 = ನೋವು ಇಲ್ಲ, 10 = ಅತಿ ಹೆಚ್ಚು ನೋವು)",
+askSym:"ಧನ್ಯವಾದಗಳು. ಈಗ ನಿಮಗೆ ಇವುಗಳಲ್ಲಿ ಯಾವುದಾದರೂ ಇದೆಯೇ?\n• ಎದೆ ನೋವು ಅಥವಾ ಒತ್ತಡ\n• ಉಸಿರಾಟದ ತೊಂದರೆ\n• ಜ್ವರ\n• ತಲೆಸುತ್ತು\n• ಗಾಯದಿಂದ ರಕ್ತಸ್ರಾವ",
+offer:"ತಿಳಿಸಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು. ನೋವು, ಜ್ವರ ಅಥವಾ ಉಸಿರಾಟದ ತೊಂದರೆ ಆದರೆ ಯಾವಾಗ ಬೇಕಾದರೂ ಇಲ್ಲಿ ತಿಳಿಸಿ.\nವೈದ್ಯರು 4 ವಾರಗಳಲ್ಲಿ ಫಾಲೋ-ಅಪ್‌ಗೆ ಸಲಹೆ ನೀಡಿದ್ದಾರೆ. ಈಗಲೇ ಬುಕ್ ಮಾಡಬೇಕೇ?",
+offer2:"ನಿಮ್ಮ ಫಾಲೋ-ಅಪ್ ಭೇಟಿಯನ್ನು ಈಗಲೇ ಬುಕ್ ಮಾಡಬೇಕೇ?",
+slots:"ಲಭ್ಯವಿರುವ ಮೊದಲ ಸಮಯಗಳು ಇಲ್ಲಿವೆ. ಬುಕ್ ಮಾಡಲು ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ.",
+booked:"✅ ಬುಕ್ ಆಗಿದೆ: {s}. ಒಂದು ದಿನ ಮುಂಚೆ ನೆನಪಿಸುತ್ತೇವೆ.",
+later:"ಪರವಾಗಿಲ್ಲ. ಫಾಲೋ-ಅಪ್ ದಿನಾಂಕದ ಹತ್ತಿರ ಮತ್ತೆ ಸಂಪರ್ಕಿಸುತ್ತೇವೆ.",
+low:"ತಿಳಿಸಿದ್ದಕ್ಕೆ ಧನ್ಯವಾದಗಳು. ಈ ಮಾಹಿತಿ ನಿಮ್ಮ ಕೇರ್ ತಂಡಕ್ಕೆ ತಲುಪಿದೆ.\nಲಕ್ಷಣಗಳು ಎಷ್ಟು ಗಂಭೀರ ಎಂದು ನಾನು ಹೇಳಲಾರೆ — ನೋವು ಹೆಚ್ಚಾದರೆ ಅಥವಾ ಜ್ವರ, ಎದೆ ನೋವು, ಉಸಿರಾಟದ ತೊಂದರೆ ಬಂದರೆ ಇಲ್ಲಿ ತಿಳಿಸಿ ಅಥವಾ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+mod:"ಧನ್ಯವಾದಗಳು. ಇದನ್ನು ಕೇರ್ ತಂಡಕ್ಕೆ ಕಳುಹಿಸಿದ್ದೇನೆ, ಇಂದು ಒಬ್ಬ ನರ್ಸ್ ನಿಮಗೆ ಕರೆ ಮಾಡುತ್ತಾರೆ.\nಎದೆ ನೋವು, ಉಸಿರಾಟದ ತೊಂದರೆ ಅಥವಾ ನೋವು ತುಂಬಾ ಹೆಚ್ಚಾದರೆ ತಕ್ಷಣ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+high:"ಇದನ್ನು URGENT ಎಂದು ಗುರುತಿಸಿ ಕೇರ್ ತಂಡಕ್ಕೆ ಕಳುಹಿಸಿದ್ದೇನೆ. 15 ನಿಮಿಷಗಳಲ್ಲಿ ಒಬ್ಬ ನರ್ಸ್ ಕರೆ ಮಾಡುತ್ತಾರೆ.\nಸ್ಥಿತಿ ಹದಗೆಟ್ಟರೆ 108 ಗೆ ಕರೆ ಮಾಡಿ. ಕೆಳಗಿನ ಆಯ್ಕೆಯನ್ನೂ ಆರಿಸಬಹುದು.",
+crit:"⚠️ ನಿಮ್ಮ ಲಕ್ಷಣಗಳಿಗೆ ಈಗಲೇ ವೈದ್ಯಕೀಯ ಗಮನ ಬೇಕು. ಆಸ್ಪತ್ರೆಯ ತುರ್ತು ತಂಡಕ್ಕೆ ತಿಳಿಸಿದ್ದೇನೆ.\nತೀವ್ರ ಎದೆ ನೋವು ಅಥವಾ ಉಸಿರಾಡಲು ಕಷ್ಟವಾದರೆ ತಕ್ಷಣ 108 ಗೆ ಕರೆ ಮಾಡಿ.\nಕೆಳಗಿನ ಒಂದು ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ:",
+amb:"🚑 ನಿಮ್ಮ ನೋಂದಾಯಿತ ಮನೆ ವಿಳಾಸಕ್ಕೆ ಆಂಬ್ಯುಲೆನ್ಸ್ ವಿನಂತಿ ಕಳುಹಿಸಲಾಗಿದೆ. ತುರ್ತು ತಂಡ {ph} ಗೆ ಕರೆ ಮಾಡಿ ಖಚಿತಪಡಿಸುತ್ತದೆ. ಫೋನ್ ಹತ್ತಿರ ಇಟ್ಟುಕೊಳ್ಳಿ. ಸ್ಥಿತಿ ಬದಲಾದರೆ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+ambGo:"🚑 ಆಂಬ್ಯುಲೆನ್ಸ್ ದಾರಿಯಲ್ಲಿದೆ — ಸುಮಾರು 18 ನಿಮಿಷ. ತಲುಪಿದಾಗ ತಂಡ ನಿಮಗೆ ಕರೆ ಮಾಡುತ್ತದೆ.",
+opd:"🏥 ತುರ್ತು OPD, ಮುಖ್ಯ ಕ್ಯಾಂಪಸ್‌ನಲ್ಲಿ ಪ್ರಾಯೋರಿಟಿ ಟೋಕನ್ {t} ಬುಕ್ ಆಗಿದೆ. ದಯವಿಟ್ಟು ಈಗಲೇ ಬನ್ನಿ ಮತ್ತು ಕೌಂಟರ್‌ನಲ್ಲಿ ಈ ಸಂದೇಶ ತೋರಿಸಿ. ನೀವೇ ವಾಹನ ಚಲಾಯಿಸಬೇಡಿ.",
+wait:"ಸರಿ. ಒಬ್ಬ ನರ್ಸ್ ಶೀಘ್ರದಲ್ಲೇ ಕರೆ ಮಾಡುತ್ತಾರೆ. ಅದಕ್ಕೂ ಮುಂಚೆ ಸ್ಥಿತಿ ಹದಗೆಟ್ಟರೆ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+stop:"{h} ನಿಂದ ಸ್ವಯಂಚಾಲಿತ ಸಂದೇಶಗಳನ್ನು ನಿಲ್ಲಿಸಲಾಗಿದೆ. ಮತ್ತೆ ಆರಂಭಿಸಲು START ಎಂದು ಕಳುಹಿಸಿ.\nತುರ್ತು ಸಂದರ್ಭದಲ್ಲಿ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+start:"ಮತ್ತೆ ಸ್ವಾಗತ! ಫಾಲೋ-ಅಪ್ ಸಂದೇಶಗಳು ಮತ್ತೆ ಆರಂಭವಾಗಿವೆ.",
+safeQ:"ನೀವು ಸರಿಯಾಗಿದ್ದೀರಾ ಎಂದು ನಾನು ಹೇಳಲಾರೆ — ಅದನ್ನು ವೈದ್ಯರು ಅಥವಾ ನರ್ಸ್ ಮಾತ್ರ ನಿರ್ಧರಿಸಬಹುದು. ಇಂದು ನಿಮಗೆ ಕರೆ ಮಾಡಲು ನರ್ಸ್‌ಗೆ ತಿಳಿಸಿದ್ದೇನೆ.\nಎದೆ ನೋವು, ಉಸಿರಾಟದ ತೊಂದರೆ ಇದ್ದರೆ ಅಥವಾ ತುಂಬಾ ಹುಷಾರಿಲ್ಲವೆನಿಸಿದರೆ 108 ಗೆ ಕರೆ ಮಾಡಿ.",
+remind:"⏰ ನೆನಪು: ನಿಮ್ಮ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ನಾಳೆ, {s}. ಸಮಯ ಬದಲಿಸಬೇಕಾದರೆ ಉತ್ತರಿಸಿ.",
+missed:"ನಿಮ್ಮ ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್‌ಗೆ ನೀವು ಬರಲಾಗಲಿಲ್ಲ. ಹೊಸ ಸಮಯ ಬುಕ್ ಮಾಡಬೇಕೇ?",
+clarify:"ಕ್ಷಮಿಸಿ, ನನಗೆ ಅರ್ಥವಾಗಲಿಲ್ಲ. ನಿಮಗೆ ಉತ್ತಮ, ಹಾಗೆಯೇ, ಅಥವಾ ಇನ್ನಷ್ಟು ಹುಷಾರಿಲ್ಲವೆನಿಸುತ್ತಿದೆಯೇ?",
+painNum:"ದಯವಿಟ್ಟು 0 ರಿಂದ 10 ರ ನಡುವಿನ ಸಂಖ್ಯೆಯನ್ನು ಕಳುಹಿಸಿ.",
+fwd:"ಧನ್ಯವಾದಗಳು, ನಿಮ್ಮ ಸಂದೇಶವನ್ನು ಕೇರ್ ತಂಡಕ್ಕೆ ತಲುಪಿಸಿದ್ದೇನೆ."}};
+const CL={good:{en:"I'm feeling good",hi:"मैं ठीक महसूस कर रहा/रही हूँ",kn:"ನನಗೆ ಚೆನ್ನಾಗಿದೆ"},pain:{en:"I have some pain",hi:"मुझे कुछ दर्द है",kn:"ನನಗೆ ಸ್ವಲ್ಪ ನೋವಿದೆ"},worse:{en:"I'm feeling worse",hi:"मेरी तबीयत ज़्यादा ख़राब है",kn:"ನನಗೆ ಇನ್ನಷ್ಟು ಹುಷಾರಿಲ್ಲ"},book:{en:"Book an appointment",hi:"अपॉइंटमेंट बुक करें",kn:"ಅಪಾಯಿಂಟ್‌ಮೆಂಟ್ ಬುಕ್ ಮಾಡಿ"},stop:{en:"Stop messages",hi:"मैसेज बंद करें",kn:"ಸಂದೇಶ ನಿಲ್ಲಿಸಿ"},yes:{en:"Yes, book now",hi:"हाँ, अभी बुक करें",kn:"ಹೌದು, ಈಗ ಬುಕ್ ಮಾಡಿ"},later:{en:"I'll book later",hi:"बाद में बुक करूँगा/करूँगी",kn:"ನಂತರ ಬುಕ್ ಮಾಡುತ್ತೇನೆ"},resched:{en:"Yes, reschedule",hi:"हाँ, नया समय दें",kn:"ಹೌದು, ಹೊಸ ಸಮಯ ಬೇಕು"},
+p2:{en:"0–3 · Mild",hi:"0–3 · हल्का",kn:"0–3 · ಸ್ವಲ್ಪ"},p5:{en:"4–6 · Moderate",hi:"4–6 · मध्यम",kn:"4–6 · ಮಧ್ಯಮ"},p8:{en:"7–8 · Severe",hi:"7–8 · तेज़",kn:"7–8 · ತೀವ್ರ"},p10:{en:"9–10 · Worst ever",hi:"9–10 · असहनीय",kn:"9–10 · ಸಹಿಸಲಾಗದ"},
+chest:{en:"Chest pain or pressure",hi:"सीने में दर्द या दबाव",kn:"ಎದೆ ನೋವು ಅಥವಾ ಒತ್ತಡ"},breath:{en:"Shortness of breath",hi:"साँस लेने में तकलीफ़",kn:"ಉಸಿರಾಟದ ತೊಂದರೆ"},fever:{en:"Fever",hi:"बुख़ार",kn:"ಜ್ವರ"},dizzy:{en:"Dizziness",hi:"चक्कर आना",kn:"ತಲೆಸುತ್ತು"},bleed:{en:"Bleeding from the wound",hi:"घाव से ख़ून आना",kn:"ಗಾಯದಿಂದ ರಕ್ತಸ್ರಾವ"},none:{en:"None of these",hi:"इनमें से कुछ नहीं",kn:"ಇವು ಯಾವುದೂ ಇಲ್ಲ"},
+amb:{en:"🚑 Send an ambulance to my home",hi:"🚑 मेरे घर एम्बुलेंस भेजें",kn:"🚑 ನನ್ನ ಮನೆಗೆ ಆಂಬ್ಯುಲೆನ್ಸ್ ಕಳುಹಿಸಿ"},opd:{en:"🏥 Priority slot in Emergency OPD",hi:"🏥 इमरजेंसी OPD में प्रायोरिटी स्लॉट",kn:"🏥 ತುರ್ತು OPD ಯಲ್ಲಿ ಪ್ರಾಯೋರಿಟಿ ಸ್ಲಾಟ್"},wait:{en:"I'll wait for the nurse's call",hi:"मैं नर्स की कॉल का इंतज़ार करूँगा/करूँगी",kn:"ನರ್ಸ್ ಕರೆಗಾಗಿ ಕಾಯುತ್ತೇನೆ"},start:{en:"START · resume messages",hi:"START · मैसेज फिर शुरू करें",kn:"START · ಸಂದೇಶ ಮತ್ತೆ ಆರಂಭಿಸಿ"}};
+const tpl=(lang,k,a)=>((TX[lang]||TX.en)[k]||TX.en[k]).replace(/\{(\w+)\}/g,(_,x)=>a[x]!==undefined?a[x]:"");
+const T=(p,k,a={})=>tpl(p.lang,k,{n:first(p),h:HN,ph:p.phone,...a});
+const Lb=(p,k)=>CL[k]?(CL[k][p.lang]||CL[k].en):k;
+
+/* ---------- clinical scoring ---------- */
+const FLAGW={chest:40,breath:40,bleed:35,fever:15,dizzy:15},FLAGN={chest:"Chest pain",breath:"Shortness of breath",bleed:"Bleeding",fever:"Fever",dizzy:"Dizziness"};
+const FLAGRX={chest:/chest|सीने|सीना|ಎದೆ/i,breath:/breath|breathe|साँस|सांस|ಉಸಿರ/i,bleed:/bleed|blood|ख़ून|खून|ರಕ್ತ/i,fever:/fever|temperature|बुख़ार|बुखार|ಜ್ವರ/i,dizzy:/dizz|faint|चक्कर|ತಲೆಸುತ್ತು/i};
+const flagsIn=t=>Object.keys(FLAGRX).filter(k=>FLAGRX[k].test(t));
+function score(tri){let s=(tri.pain||0)*6+tri.flags.reduce((a,f)=>a+FLAGW[f],0)+(tri.worse?10:0);
+ const red=tri.flags.includes("chest")||tri.flags.includes("breath");if(red)s=Math.max(s,80);if(tri.flags.includes("bleed"))s=Math.max(s,60);s=Math.min(100,s);
+ return{score:s,band:s>=75?"Critical":s>=50?"High":s>=25?"Moderate":"Low",pain:tri.pain,flags:tri.flags.slice(),worse:tri.worse,red}}
+const BCLS={Critical:"c",High:"h",Moderate:"m",Low:"l"};
+const sevPill=p=>p.sev?`<span class="sev ${BCLS[p.sev.band]}">${p.sev.band} · ${p.sev.score}</span>`:`<span class="sev x">Not assessed</span>`;
+const triSum=tri=>(tri.pain!=null?"Pain "+tri.pain+"/10":"")+(tri.flags.length?(tri.pain!=null?" · ":"")+tri.flags.map(f=>FLAGN[f]).join(", "):"")||"Feeling worse";
+const UNSAFE=/\b(you('| a)re (fine|okay|ok|alright)|nothing to worry|no need to (worry|come|see)|it'?s (just )?normal)\b/i;
+
+/* ---------- static data ---------- */
+const SL=[["Tue, 10 Nov · 10:30 AM · Main Campus",D(10,10,10,30)],["Wed, 11 Nov · 2:00 PM · Main Campus",D(10,11,14)],["Fri, 13 Nov · 9:15 AM · Indiranagar Clinic",D(10,13,9,15)]];
+const STG={NONE:"No active journey",ADMITTED:"Admitted · welcome message sent",SCHEDULED:"Discharged · check-in due tomorrow",CHECKIN:"Check-in sent · waiting for reply",TRIAGE:"AI is asking about symptoms",OFFER:"Booking offered",SLOTS:"Patient is choosing a time",PENDING:"Patient will book later",BOOKED:"Follow-up appointment booked",REMINDED:"Reminder sent · visit coming up",ESCALATED:"Patient reported a problem",MISSED:"Missed appointment",COMPLETED:"Consultation completed"};
+const STS={NONE:["No journey","n"],ADMITTED:["Admitted","b"],SCHEDULED:["Discharged","b"],CHECKIN:["Waiting for reply","a"],TRIAGE:["AI symptom check","a"],OFFER:["Booking offered","b"],SLOTS:["Choosing a time","b"],PENDING:["Will book later","a"],BOOKED:["Appointment booked","b"],REMINDED:["Reminder sent","g"],ESCALATED:["Urgent","r"],MISSED:["Missed visit","a"],COMPLETED:["All done","g"]};
+const FF={ADMITTED:"Fast-forward: patient discharged",SCHEDULED:"Fast-forward: send tomorrow's check-in",PENDING:"Fast-forward: message the patient again",BOOKED:"Fast-forward: send appointment reminder",REMINDED:"Fast-forward: visit day"};
+const PRI={ESCALATED:0,MISSED:1,TRIAGE:2,CHECKIN:2,PENDING:3,OFFER:4,SLOTS:4,SCHEDULED:5,ADMITTED:5,BOOKED:6,REMINDED:7,COMPLETED:8,NONE:9};
+const DONE={NONE:0,ADMITTED:1,SCHEDULED:1,CHECKIN:2,TRIAGE:2,OFFER:3,SLOTS:3,PENDING:3,ESCALATED:2,BOOKED:4,REMINDED:5,MISSED:5,COMPLETED:6};
+const EVN={PatientAdmitted:"Patient admitted",PatientDischarged:"Patient discharged",FollowUpRecommended:"Follow-up advised by doctor",AppointmentMissed:"Missed appointment reported",TestOrdered:"Test ordered",LabResultAvailable:"Test result ready"};
+const BASE={dis:412,eng:342,book:231,vis:199,rep:71,msgs:1186,emer:7,opt:9},PRICE={consult:800,diag:650,rep:22000};
+
+/* ---------- state ---------- */
+const M=(f,t,m,v)=>({f,t,m,v:!!v});
+const P=(id,name,mrn,doc,st,o={})=>({id,name,mrn,doc,st,lang:"en",voice:false,optOut:false,sev:null,tri:null,q:null,cb:null,notes:[],phone:"+91 98"+(10000000+[...mrn].reduce((a,c)=>(a*31+c.charCodeAt(0))%89999999,7)),chat:[],ts:{},appt:null,resp:null,evType:"PatientDischarged",start:D(9,12,10,15),upd:"—",...o});
+let S,sel="p2",ehrSel="p7";
+function seed(){const now=Date.now(),R=new Date(now-4*6e4),R2=new Date(+R-9*6e4),C=new Date(now-7*6e4),C2=new Date(+C-3*6e4),hh=k=>tpl("hi",k,{n:"Rahul",h:HN}),kk=(k,n)=>tpl("kn",k,{n,h:HN}),ee=(k,n,a={})=>tpl("en",k,{n,h:HN,...a});
+const rTri={pain:5,flags:["fever","dizzy"],worse:true},iTri={pain:null,flags:["chest"],worse:true},dTri={pain:5,flags:[],worse:false};
+S={view:S?S.view:"home",pf:"all",tf:"mine",today:D(9,13),now:D(9,13,9,2),lAll:0,cfg:{admit:true,disch:true,checkin:true,remind:true},
+log:[["12 Oct, 10:15","Patient discharged · from hospital system","Ananya Sharma (CG-1042)","g"],["12 Oct, 10:15","Discharge message sent","WhatsApp · Ananya Sharma","g"],["13 Oct, 08:20","Patient opted out","Neha Gupta replied STOP · automated messages paused","n"],["13 Oct, 08:30","Patient admitted · from hospital system","Joseph D'Souza (CG-1036) · welcome message sent","g"],["13 Oct, 08:50","Nurse callback created","Deepa Menon · Moderate (30/100)","a"],["13 Oct, 09:00","Check-in sent","WhatsApp · Ananya Sharma","g"],[dt(C),"CRITICAL case escalated","Imran Sheikh (CG-1051) · chest pain","r"],[dt(new Date(+C+6e4)),"Ambulance requested","Imran Sheikh · requested by patient on WhatsApp","r"],[dt(R),"URGENT case escalated","Rahul Verma (CG-1038) · High (70/100)","r"]].map(([t,title,sub,c])=>({t,title,sub,c})),
+esc:[{id:"E-200",pid:"p8",band:"Critical",score:80,why:"Chest tightness and sweating",to:"Lakshmi Rao (Nurse)",auto:false,called:false,done:false,at:+C,due:+C+5*6e4},{id:"E-201",pid:"p2",band:"High",score:70,why:"Pain 5/10 · Fever, Dizziness",to:null,auto:false,called:false,done:false,at:+R,due:+R+15*6e4}],
+emer:[{id:"R-301",pid:"p8",kind:"amb",at:+C+6e4,st:"REQUESTED",token:null,by:"patient"}],
+camp:[{id:"c1",name:"Free heart check-up camp · Indiranagar",src:"Partner diagnostic labs (consent collected at sign-up)",aud:2140,cons:1310,st:"Draft",res:""},{id:"c2",name:"Lapsed cardiac patients · no visit in 12 months",src:"Own patient records · WhatsApp consent on file",aud:1180,cons:1022,st:"Running",res:"64 visits booked · ₹5.1 L so far"},{id:"c3",name:"Corporate health check · Whitefield tech parks",src:"Employer wellness partnership · employees opted in",aud:3400,cons:3400,st:"Scheduled",res:"Starts 20 Oct"}],
+pts:[P("p1","Ananya Sharma","CG-1042","Dr. Meera Shah","CHECKIN",{upd:"13 Oct, 09:00",ts:{recv:["12 Oct, 10:15","Discharged"],checkin:["13 Oct, 09:00","Day 1"]},chat:[M("cg",ee("disch","Ananya"),"10:16 AM"),M("sys","— Tue, 13 Oct —",""),M("cg",ee("greet","Ananya"),"9:00 AM")]}),
+P("p2","Rahul Verma","CG-1038","Dr. S. Nair","ESCALATED",{lang:"hi",tri:rTri,sev:score(rTri),escAt:+R,start:D(9,12,16,30),upd:dt(R),resp:"High · 70",ts:{recv:["12 Oct, 16:30","Discharged"],checkin:[dt(R2),"Day 1"],resp:[dt(R),"Day 1"]},chat:[M("cg",hh("greet"),tm(R2)),M("pt","मेरी तबीयत ज़्यादा ख़राब है",tm(R2)),M("cg",hh("askPain"),tm(R2)),M("pt","4–6 · मध्यम",tm(R)),M("cg",hh("askSym"),tm(R)),M("pt","बुख़ार बढ़ गया है और चक्कर आ रहे हैं",tm(R)),M("cg",hh("high"),tm(R))]}),
+P("p3","Priya Nair","CG-1045","Dr. S. Nair","BOOKED",{lab:{name:"Lipid profile & BP report",st:"READY",at:now-5*36e5},start:D(9,11,11,20),upd:"12 Oct, 09:06",resp:"Feeling good",appt:{slot:SL[0][0],date:SL[0][1],ext:"EHR-70412"},ts:{recv:["11 Oct, 11:20","Discharged"],checkin:["12 Oct, 09:00","Day 1"],resp:["12 Oct, 09:04","Day 1"],booking:["12 Oct, 09:06","Day 1"]},chat:[M("cg",ee("greet","Priya"),"9:00 AM"),M("pt","I'm feeling good","9:04 AM"),M("cg",ee("offer","Priya"),"9:04 AM"),M("pt","Yes, book now","9:05 AM"),M("cg",ee("booked","Priya",{s:SL[0][0]}),"9:06 AM")]}),
+P("p4","Meera Iyer","CG-1031","Dr. A. Rao","MISSED",{lang:"kn",missAt:now-2*36e5,start:D(9,5,10),upd:"13 Oct, 08:10",resp:"Feeling good",appt:{slot:"Mon, 12 Oct · 11:00 AM · Main Campus",date:D(9,12,11),ext:"EHR-70301"},ts:{recv:["5 Oct, 10:00","Discharged"],checkin:["6 Oct, 09:00","Day 1"],resp:["6 Oct, 09:05","Day 1"],booking:["6 Oct, 09:08","Day 1"],reminder:["11 Oct, 09:00","Day 6"]},chat:[M("cg",kk("missed","Meera"),"8:10 AM")],notes:[{by:"Sarah Chen",role:"Care Coordinator",at:now-26*36e5,to:"Patient file",text:"Daughter (Kavya) manages her appointments. Prefers calls after 6 pm."}]}),
+P("p5","Suresh Patel","CG-1047","Dr. S. Nair","OFFER",{lab:{name:"ECG & echo test",st:"ORDERED",at:now-26*36e5},start:D(9,12,15),upd:"13 Oct, 08:20",resp:"Feeling good",ts:{recv:["12 Oct, 15:00","Discharged"],checkin:["13 Oct, 08:00","Day 1"],resp:["13 Oct, 08:20","Day 1"]},chat:[M("cg",ee("greet","Suresh"),"8:00 AM"),M("pt","I'm feeling good","8:20 AM"),M("cg",ee("offer","Suresh"),"8:20 AM")]}),
+P("p6","Anil Kumar","CG-1029","Dr. S. Nair","REMINDED",{lab:{name:"Cholesterol test",st:"REVIEWED",at:now-2*36e5},start:D(9,1,10),upd:"13 Oct, 09:00",resp:"Feeling good",appt:{slot:"Wed, 14 Oct · 2:00 PM · Main Campus",date:D(9,14,14),ext:"EHR-70288"},ts:{recv:["1 Oct, 10:00","Discharged"],checkin:["2 Oct, 09:00","Day 1"],resp:["2 Oct, 09:03","Day 1"],booking:["2 Oct, 09:05","Day 1"],reminder:["13 Oct, 09:00","Day 12"]},chat:[M("cg",ee("remind","Anil",{s:"Wed, 14 Oct · 2:00 PM · Main Campus"}),"9:00 AM")],notes:[{by:"Vikram Mehta",role:"Hospital Admin",at:now-3*36e5,to:"Discharge summary",text:"Insurance pre-authorisation received for the follow-up echo."}]}),
+P("p7","Kavita Rao","CG-1050","Dr. Meera Shah","NONE"),
+P("p8","Imran Sheikh","CG-1051","Dr. S. Nair","ESCALATED",{tri:iTri,sev:score(iTri),escAt:+C,start:D(9,11,12),upd:dt(C),resp:"Critical · 80",ts:{recv:["11 Oct, 12:00","Discharged"],checkin:[dt(C2),"Day 2"],resp:[dt(C),"Day 2"]},chat:[M("cg",ee("greet","Imran"),tm(C2)),M("pt","I have chest tightness and I'm sweating a lot",tm(C)),M("cg",ee("crit","Imran"),tm(C)),M("pt","🚑 Send an ambulance to my home",tm(new Date(+C+6e4))),M("cg",ee("amb","Imran",{ph:"+91 98 on file"}),tm(new Date(+C+6e4)))]}),
+P("p9","Neha Gupta","CG-1052","Dr. A. Rao","OFFER",{optOut:true,optAt:now-40*6e4,start:D(9,12,9),upd:"13 Oct, 08:20",resp:"Feeling good",ts:{recv:["12 Oct, 09:00","Discharged"],checkin:["13 Oct, 08:00","Day 1"],resp:["13 Oct, 08:15","Day 1"]},chat:[M("cg",ee("greet","Neha"),"8:00 AM"),M("pt","I'm feeling good","8:15 AM"),M("cg",ee("offer","Neha"),"8:15 AM"),M("pt","Stop messages","8:20 AM"),M("cg",ee("stop","Neha"),"8:20 AM")]}),
+P("p10","Joseph D'Souza","CG-1036","Dr. S. Nair","ADMITTED",{evType:"PatientAdmitted",start:D(9,13,8,30),upd:"13 Oct, 08:30",ts:{recv:["13 Oct, 08:30","Admitted"]},chat:[M("cg",ee("admit","Joseph"),"8:30 AM")]}),
+P("p11","Deepa Menon","CG-1053","Dr. Meera Shah","OFFER",{lang:"kn",tri:dTri,sev:score(dTri),cb:{why:"Pain 5/10",at:now-50*6e4,done:false},start:D(9,12,11),upd:"13 Oct, 08:50",resp:"Moderate · 30",ts:{recv:["12 Oct, 11:00","Discharged"],checkin:["13 Oct, 08:40","Day 1"],resp:["13 Oct, 08:50","Day 1"]},chat:[M("cg",kk("greet","Deepa"),"8:40 AM"),M("pt","ನನಗೆ ಸ್ವಲ್ಪ ನೋವಿದೆ","8:44 AM"),M("cg",kk("askPain","Deepa"),"8:44 AM"),M("pt","4–6 · ಮಧ್ಯಮ","8:47 AM"),M("cg",kk("askSym","Deepa"),"8:47 AM"),M("pt","ಇವು ಯಾವುದೂ ಇಲ್ಲ","8:50 AM"),M("cg",kk("mod","Deepa"),"8:50 AM"),M("cg",kk("offer2","Deepa"),"8:50 AM")]})]};
+S.pts.find(p=>p.id==="p8").chat[4].t=ee("amb","Imran",{ph:S.pts.find(p=>p.id==="p8").phone})}
+
+const gp=id=>S.pts.find(p=>p.id===id),first=p=>p.name.split(" ")[0],dayOf=p=>Math.max(0,Math.round((sod(S.now)-sod(p.start))/864e5));
+const ini=p=>p.name.split(" ").map(w=>w[0]).join(""),hue=p=>(p.id.charCodeAt(1)*47+p.id.length*90)%360,avat=p=>`<span class="av" style="background:hsl(${hue(p)} 55% 86%);color:hsl(${hue(p)} 50% 25%)">${ini(p)}</span>`;
+const tick=()=>{S.now=new Date(+S.now+6e4)};
+const say=(p,f,t,at)=>{tick();p.chat.push(M(f,t,f==="sys"?"":tm(at||new Date()),p.voice&&f!=="sys"));p.upd=dt(at||new Date())};
+function ai(p,t){if(UNSAFE.test(t)){ev("AI safety rule applied","Blocked a reassuring message · "+p.name,"a",p);t=T(p,"safeQ")}say(p,"cg",t)}
+const ev=(title,sub,c="g",p)=>{tick();const n=new Date();S.log.push({t:dt(n),title,sub,c});if(p)p.upd=dt(n)};
+const stamp=(p,id,r)=>{p.ts[id]=[dt(new Date()),r===undefined?"Day "+dayOf(p):r]};
+const toast=(m,u)=>{const t=$("toast");t.innerHTML=esc(m)+(u?'<button data-a="undo">Undo</button>':"");toast.u=u;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,u?8000:2800)};
+const openEsc=p=>S.esc.find(x=>x.pid===p.id&&!x.done),emerOf=p=>S.emer.filter(r=>r.pid===p.id),liveEmer=p=>S.emer.find(r=>r.pid===p.id&&r.st!=="ARRIVED");
+const mine=p=>ROLE!=="doctor"||p.doc===ROLES.doctor.name;
+
+/* ---------- journey actions ---------- */
+function reset(p,st,type){Object.assign(p,{st,appt:null,chat:[],ts:{},resp:null,evType:type,start:new Date(S.now),tri:null,q:null,sev:null,cb:null,waited:false})}
+function admit(p,det){reset(p,"ADMITTED","PatientAdmitted");p.details=det;stamp(p,"recv","Admitted");ev("Patient admitted · from hospital system",p.name+" ("+p.mrn+")","g",p);
+ if(p.optOut){say(p,"sys","Welcome message not sent · patient opted out");ev("Message not sent",p.name+" has opted out","n",p)}else if(S.cfg.admit){ai(p,T(p,"admit"));ev("Admission message sent","WhatsApp · "+p.name+" · "+LN[p.lang],"g",p)}else say(p,"sys","Admission message is switched off in Settings")}
+function discharge(p,type,det){const wasAdm=p.st==="ADMITTED";if(!wasAdm)reset(p,"SCHEDULED",type);else{p.st="SCHEDULED";p.evType=type}p.details=det;stamp(p,"recv",type==="PatientDischarged"?"Discharged":"From EHR");
+ ev(EVN[type]+" · from hospital system",p.name+" ("+p.mrn+")","g",p);
+ if(p.optOut){say(p,"sys","Discharge message not sent · patient opted out");ev("Message not sent",p.name+" has opted out","n",p)}
+ else if(type==="PatientDischarged"&&S.cfg.disch){ai(p,T(p,"disch"));ev("Discharge message sent","WhatsApp · "+p.name+" · includes Book and Stop options","g",p)}
+ else say(p,"sys","Follow-up plan started · first check-in due tomorrow")}
+function offer(p,k="offer"){ai(p,T(p,k));p.st="OFFER";ev("Follow-up booking offered",p.name,"g",p)}
+function slots(p){ev("Availability checked","3 slots from hospital scheduling","g",p);ai(p,T(p,"slots"));p.st="SLOTS"}
+function book(p,i){p.appt={slot:SL[i][0],date:SL[i][1],ext:"EHR-"+(70500+Math.floor(Math.random()*400))};p.st="BOOKED";ai(p,T(p,"booked",{s:SL[i][0]}));ev("Appointment booked","Written back to hospital system · "+p.appt.ext,"g",p);stamp(p,"booking")}
+function later_(p){ai(p,T(p,"later"));p.st="PENDING";ev("Will check in again later",p.name+" chose to book later","a",p)}
+function optOut(p){p.optOut=true;p.optAt=Date.now();ai(p,T(p,"stop"));ev("Patient opted out",p.name+" replied STOP · automated messages paused","n",p)}
+function startTri(p,worse){p.tri={pain:null,flags:[],worse};p.st="TRIAGE";p.q="pain";p.resp=worse?"Feeling worse":"Reported pain";stamp(p,"resp");ai(p,T(p,"askPain"));ev("AI symptom check started",p.name+" · asking for pain score (0–10)","a",p)}
+function finishTri(p){const s=score(p.tri);p.sev=s;p.q=null;p.resp=s.band+" · "+s.score;
+ ev("Severity scored",p.name+" · "+s.band+" ("+s.score+"/100)",s.score>=50?"r":s.score>=25?"a":"g",p);
+ if(s.score>=50)escal(p,triSum(p.tri),s.score>=75);
+ else if(s.score>=25){p.cb={why:triSum(p.tri),at:Date.now(),done:false};ai(p,T(p,"mod"));ev("Nurse callback created",p.name+" · Moderate ("+s.score+"/100)","a",p);offer(p,"offer2")}
+ else{ai(p,T(p,"low"));ev("Low severity · added to record",p.name+" · care team can see it","g",p);offer(p,"offer2")}}
+function escal(p,why,crit){const n=Date.now();p.st="ESCALATED";p.escAt=n;p.waited=false;
+ S.esc.push({id:"E-"+(202+S.esc.length),pid:p.id,band:p.sev.band,score:p.sev.score,why,to:null,auto:false,called:false,done:false,at:n,due:n+(crit?5:15)*6e4});
+ ev((crit?"CRITICAL":"URGENT")+" case escalated",p.name+" ("+p.mrn+") · "+why,"r",p);ai(p,T(p,crit?"crit":"high"));toast((crit?"Critical":"Urgent")+" case escalated · "+p.name)}
+function emerReq(p,kind,by){if(liveEmer(p)&&liveEmer(p).kind===kind)return;const token=kind==="opd"?"E-"+(14+S.emer.filter(r=>r.kind==="opd").length):null;
+ S.emer.push({id:"R-"+(302+S.emer.length),pid:p.id,kind,at:Date.now(),st:"REQUESTED",token,by});ai(p,T(p,kind,{t:token}));
+ ev(kind==="amb"?"Ambulance requested":"Emergency OPD priority slot booked",p.name+" · "+(by==="patient"?"requested by patient on WhatsApp":"by "+meTag())+(token?" · token "+token:""),"r",p);
+ if(by!=="patient"){render();toast(kind==="amb"?"Ambulance requested for "+p.name:"Emergency OPD token "+token+" booked for "+p.name)}}
+function emerAdv(id){const r=S.emer.find(x=>x.id===id),p=gp(r.pid);
+ if(r.kind==="amb"&&r.st==="REQUESTED"){r.st="DISPATCHED";r.at2=Date.now();ai(p,T(p,"ambGo"));ev("Ambulance dispatched",p.name+" · ETA 18 min · confirmed by "+meTag(),"g",p);toast("Ambulance dispatched · patient informed")}
+ else{r.st="ARRIVED";r.at2=Date.now();say(p,"sys",r.kind==="amb"?"Patient reached Emergency by ambulance":"Patient arrived at Emergency OPD");ev("Patient arrived at Emergency",p.name+(r.token?" · token "+r.token:""),"g",p);toast(p.name+" marked as arrived")}
+ render()}
+
+/* ---------- patient replies ---------- */
+const NUM=t=>{const m=t.match(/\b(10|[0-9])\b/);return m?+m[1]:null};
+function cls(t){t=t.toLowerCase();
+ if(/^\s*stop\b|unsubscribe|opt ?out|don'?t message|बंद करें|ನಿಲ್ಲಿಸಿ/.test(t))return"stop";if(/^\s*start\b|resume/.test(t))return"start";
+ if(/am i (ok|okay|fine|alright)|is (this|it) normal|should i (be )?worr|is it serious|क्या मैं ठीक|ನಾನು ಸರಿ/.test(t))return"safeq";
+ if(/worse|not well|unwell|ख़राब|खराब|ಹುಷಾರಿಲ್ಲ/.test(t)||flagsIn(t).length)return"worse";
+ if(/pain|hurt|ache|दर्द|ನೋವು/.test(t))return"pain";
+ if(/later|not now|busy|next week|बाद में|ನಂತರ/.test(t))return"later";
+ if(/^(no|nope)\b|don'?t|नहीं|ಇಲ್ಲ/.test(t))return"no";
+ if(/book|appointment|reschedule|बुक|ಬುಕ್/.test(t))return"book";
+ if(/yes|yeah|sure|please|confirm|^ok|हाँ|ಹೌದು/.test(t))return"yes";
+ if(/good|fine|great|better|well|ठीक|ಚೆನ್ನಾಗಿ/.test(t))return"good";return"?"}
+function CHIPS(p){if(p.optOut)return[["start"]];const c=k=>[k];
+ switch(p.st){case"ADMITTED":return[c("stop")];case"SCHEDULED":return[c("book"),c("stop")];case"CHECKIN":return[c("good"),c("pain"),c("worse"),c("book"),c("stop")];
+ case"TRIAGE":return p.q==="pain"?[c("p2"),c("p5"),c("p8"),c("p10")]:[c("chest"),c("breath"),c("fever"),c("dizzy"),c("bleed"),c("none")];
+ case"OFFER":return[c("yes"),c("later"),c("stop")];case"PENDING":return[c("yes")];case"MISSED":return[c("resched"),c("later")];
+ case"SLOTS":return SL.map((s,i)=>["s"+(i+1),s[0].split(" · ").slice(0,2).join(" · ")]);
+ case"ESCALATED":return liveEmer(p)||p.waited?null:[c("amb"),c("opd"),c("wait")];default:return null}}
+function reply(p,text,key){text=(text||"").trim();if(!text)return;say(p,"pt",text);ev("Patient reply received",first(p)+': "'+text+'"',"g",p);
+ const k=key||cls(text),red=key?[]:flagsIn(text).filter(f=>f==="chest"||f==="breath"||f==="bleed");
+ if(k==="stop"){if(!p.optOut)optOut(p);return render()}
+ if(k==="start"){if(p.optOut){p.optOut=false;ai(p,T(p,"start"));ev("Patient opted back in",p.name+" · messages resumed","g",p)}return render()}
+ // Safety: red-flag symptoms always escalate, even if the patient has opted out of automated messages
+ if(red.length&&p.st!=="ESCALATED"){p.tri={pain:p.tri&&p.tri.pain!=null?p.tri.pain:NUM(text),flags:flagsIn(text),worse:true};p.q=null;stamp(p,"resp");finishTri(p);return render()}
+ if(red.length&&p.st==="ESCALATED"){const e=openEsc(p);if(e){e.why+=" · now: "+text;}ai(p,T(p,"wait"));ev("New red-flag symptom added to urgent case",p.name+': "'+text+'"',"r",p);return render()}
+ if(k==="safeq"){ai(p,T(p,"safeQ"));p.cb={why:"Asked: “"+text+"”",at:Date.now(),done:false};ev("AI safety rule applied","No reassurance given · nurse callback created for "+p.name,"a",p);return render()}
+ if(p.optOut){say(p,"sys","Patient is opted out · reply forwarded to care team");return render()}
+ const s=p.st;
+ if(s==="TRIAGE"){if(p.q==="pain"){const n=key?{p2:2,p5:5,p8:8,p10:10}[key]:NUM(text);if(n==null){ai(p,T(p,"painNum"));return render()}p.tri.pain=n;p.q="sym";ai(p,T(p,"askSym"));ev("Pain score received",p.name+" · "+n+"/10","g",p)}
+  else{p.tri.flags=key?(key==="none"?[]:[key]):flagsIn(text);finishTri(p)}}
+ else if(["pain","worse"].includes(k)&&!["SLOTS","TRIAGE"].includes(s)&&s!=="ESCALATED")startTri(p,k==="worse");
+ else if(s==="CHECKIN"){if(k==="good"){p.resp="Feeling good";stamp(p,"resp");offer(p)}else if(k==="book"){p.resp="Wants to book";stamp(p,"resp");slots(p)}else ai(p,T(p,"clarify"))}
+ else if(s==="SCHEDULED"){if(k==="book"||k==="yes"){p.resp="Wants to book";stamp(p,"resp");slots(p)}else ai(p,T(p,"fwd"))}
+ else if(s==="SLOTS"){const n=key?+key.slice(1):NUM(text);if(n>=1&&n<=3)book(p,n-1);else if(k==="later")later_(p);else ai(p,T(p,"slots"))}
+ else if(["OFFER","PENDING","MISSED"].includes(s)){if(["yes","resched","good","book"].includes(k))slots(p);else if(k==="later"||k==="no")later_(p);else ai(p,T(p,"offer2"))}
+ else if(s==="ESCALATED"){if(k==="amb"||k==="opd")emerReq(p,k,"patient");else if(k==="wait"){p.waited=true;ai(p,T(p,"wait"))}else{ai(p,T(p,"wait"))}}
+ else ai(p,T(p,"fwd"));
+ render()}
+function adv(p){const s=p.st;
+ if(s==="ADMITTED"){S.now=new Date(+S.now+2*864e5);discharge(p,"PatientDischarged","");}
+ else if(p.optOut){say(p,"sys","Automated message not sent · patient opted out");ev("Message not sent",p.name+" has opted out","n",p);toast(p.name+" has opted out · no message sent");return render()}
+ else if(s==="SCHEDULED"){S.now=later(S.now,new Date(+sod(p.start)+864e5+9*36e5));p.st="CHECKIN";say(p,"sys","— "+dl(S.now)+" —");ai(p,T(p,"greet"));stamp(p,"checkin");ev("Check-in sent","WhatsApp · "+p.name+" · "+LN[p.lang],"g",p)}
+ else if(s==="PENDING"){S.now=later(new Date(+S.now+864e5),new Date(+sod(p.start)+27*864e5+9*36e5));say(p,"sys","— "+dl(S.now)+" —");offer(p,"offer2")}
+ else if(s==="BOOKED"){S.now=later(S.now,new Date(+sod(p.appt.date)-864e5+9*36e5));say(p,"sys","— "+dl(S.now)+" —");ai(p,T(p,"remind",{s:p.appt.slot}));p.st="REMINDED";stamp(p,"reminder");ev("Reminder sent","WhatsApp · "+p.name,"g",p)}
+ else if(s==="REMINDED"){S.now=later(S.now,new Date(+p.appt.date+36e5));p.st="COMPLETED";stamp(p,"done");say(p,"sys","Consultation completed");ev("Consultation completed","Follow-up visit done · "+p.name+" · ₹"+num(PRICE.consult+PRICE.diag)+" billed","g",p)}
+ render()}
+function sendEHR(){const e=$("et").value,p=gp($("ep").value),det=$("ed").value.trim(),idle=["NONE","COMPLETED"].includes(p.st);sel=p.id;
+ if(e==="PatientAdmitted"){if(idle)admit(p,det);else ev(EVN[e]+" · from hospital system",p.name+" · already in a journey","n",p)}
+ else if(e==="FollowUpRecommended"||e==="PatientDischarged"){if(idle||p.st==="ADMITTED")discharge(p,e,det);else ev(EVN[e]+" · from hospital system",p.name+" · already in a journey","n",p)}
+ else if(e==="AppointmentMissed"){if(["BOOKED","REMINDED"].includes(p.st)){p.st="MISSED";p.missAt=Date.now();if(!p.optOut)ai(p,T(p,"missed"));ev(EVN[e]+" · from hospital system",p.name+" · reschedule offered","a",p)}else ev(EVN[e]+" · from hospital system",p.name+" · no booked visit","n",p)}
+ else if(e==="TestOrdered"){p.lab={name:"Lipid profile & BP report",st:"ORDERED",at:Date.now()};ev("Test ordered",p.name+" · "+p.lab.name,"g",p);say(p,"sys","Test ordered · result pending")}
+ else{if(!p.lab)p.lab={name:"Lipid profile & BP report"};labReady(p.id,1)}
+ $("ehrd").close();go("patients");toast("Event sent to CareGraph · "+EVN[e]);render()}
+
+/* ---------- care team actions ---------- */
+function review(p){const e=openEsc(p);if(!e)return;const s=p.sev,le=liveEmer(p);
+ const st=e.to?`<span class="pill b">${e.auto?"Auto-assigned to ":"Assigned to "}${esc(e.to)}</span>`:`<span class="pill n">Nobody has acknowledged yet</span>`;
+ $("dlg").innerHTML=`<h3>${esc(p.name)} · ID ${p.mrn}</h3><span class="pill u">${e.band==="Critical"?"CRITICAL – Act now":"URGENT – Needs clinical review"}</span> ${s?sevPill(p):""} ${st}
+ <p style="margin:12px 0 0"><b>Reported:</b> ${esc(e.why)}</p>${s?`<p style="color:var(--mu);margin:6px 0 0">Pain ${s.pain==null?"not asked (red flag found first)":s.pain+"/10"}${s.flags.length?" · "+s.flags.map(f=>FLAGN[f]).join(", "):""}${s.worse?" · feeling worse":""}</p>`:""}
+ <p style="color:var(--mu);margin:6px 0 0">Escalated ${ago(e.at)} (${dt(new Date(e.at))}).${e.to?"":" If nobody acknowledges it, it goes to "+esc(p.doc)+" automatically in <b class=\"cd\" data-due=\""+e.due+"\">"+mmss(e.due-Date.now())+"</b>."}${le?" "+(le.kind==="amb"?"🚑 Ambulance "+le.st.toLowerCase()+".":"🏥 Emergency OPD token "+le.token+" booked."):""}</p>
+ <p style="color:var(--mu);margin:6px 0 0">The AI flags and scores; the care team decides what happens next.</p>
+ ${le?"":`<div class="row"><button class="e" data-a="eamb" data-i="${p.id}">🚑 Send ambulance</button><button class="e" data-a="eopd" data-i="${p.id}">🏥 Emergency OPD slot</button></div>`}
+ <div class="row">${e.to?`<button class="p" data-a="rv" data-i="${e.id}">Resolve &amp; resume follow-up</button><button data-a="unas" data-i="${e.id}">Undo assign</button>`:`<button class="p" data-a="as" data-i="${e.id}">I'll handle this</button><button data-a="asd" data-i="${e.id}">Send to ${esc(p.doc)} now</button>`}<button data-a="cl">Close</button></div>`;if(!$("dlg").open)$("dlg").showModal()}
+function assign(id){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.to=meTag();e.auto=false;ev("Urgent case acknowledged",meTag()+" · "+p.name,"g",p);render();review(p)}
+function assignDoc(id,auto){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.to=p.doc;e.auto=!!auto;ev(auto?"Auto-assigned to doctor":"Assigned to doctor",(auto?"Nobody acknowledged in time · ":"")+p.doc+" · "+p.name,auto?"r":"g",p);if(auto)toast("Nobody acknowledged it. Auto-assigned to "+p.doc);render();if($("dlg").open)review(p)}
+function unassign(id){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.to=null;e.auto=false;e.due=Date.now()+(e.band==="Critical"?5:15)*6e4;ev("Assignment undone","Back to unassigned · "+p.name,"a",p);render();if($("dlg").open)review(p)}
+function resolve(id){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.done=true;e.called=true;e.by=meTag();say(p,"cg",me().name+" (Care team): Thank you, we've reviewed your symptoms. Would you like to book your follow-up now?");p.st="OFFER";ev("Urgent case resolved",meTag()+" · "+p.name,"g",p);$("dlg").close();toast("Urgent case resolved · follow-up resumed",()=>reopen(id));render()}
+function reopen(id){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.done=false;p.st="ESCALATED";say(p,"sys","Case reopened by care team");ev("Urgent case reopened",p.name+" ("+p.mrn+")","r",p);render();toast("Case reopened")}
+function called(id){const e=S.esc.find(x=>x.id===id),p=gp(e.pid);e.called=true;if(!e.to)e.to=meTag();ev("Patient called",meTag()+" called "+p.name+" about urgent concern","g",p);render();toast("Call logged · doctor review still open")}
+function cbDone(id){const p=gp(id);p.cb.done=true;p.cb.by=meTag();ev("Callback completed",meTag()+" called "+p.name,"g",p);render();toast("Callback logged",()=>{p.cb.done=false;render()})}
+function autoCheck(){S.esc.forEach(e=>{if(!e.done&&!e.to&&Date.now()>=e.due)assignDoc(e.id,true)})}
+function updCd(){document.querySelectorAll(".cd").forEach(x=>x.textContent=mmss(+x.dataset.due-Date.now()))}
+function labReady(id,nr){const p=gp(id);p.lab.st="READY";p.lab.at=Date.now();ev("Test result ready","Doctor review pending · "+p.name+" ("+p.mrn+")","a",p);say(p,"sys","Test result ready · waiting for doctor review");if(!nr)render()}
+function labRev(id){const p=gp(id);p.lab.st="REVIEWED";p.lab.at=Date.now();ev("Doctor reviewed results",p.doc+" · "+p.name+" ("+p.mrn+")","g",p);say(p,"sys","Results reviewed by "+p.doc);render();toast("Marked as reviewed by "+p.doc,()=>labUnrev(id))}
+function labUnrev(id){const p=gp(id);p.lab.st="READY";p.lab.at=Date.now();ev("Review undone","Back to doctor review pending · "+p.name,"a",p);render()}
+const when=p=>p.appt?p.appt.slot.split(" · ").slice(0,2).join(" · "):"in about 4 weeks";
+function labInf(id){const p=gp(id);p.lab.st="INFORMED";p.lab.at=Date.now();const m=M("cg","Your test results ("+p.lab.name+") have been reviewed by "+p.doc+". Your follow-up is due "+when(p)+". Reply here if you have any questions.",tm(new Date()),p.voice);m.inf=1;tick();p.chat.push(m);p.upd=dt(new Date());ev("Patient informed of results",p.name+" · WhatsApp","g",p);render();toast("Patient informed",()=>labUninf(id))}
+function labUninf(id){const p=gp(id);p.lab.st="REVIEWED";p.chat=p.chat.filter(m=>!m.inf);ev("Patient informed undone",p.name+" · message removed","a",p);render()}
+function addNote(){const p=gp(sel),t=$("nin").value.trim();if(!t){$("nin").focus();return}p.notes.push({by:me().name,role:me().label,at:Date.now(),to:$("nto").value,text:t});$("nin").value="";ev("Note added to file",me().name+" · "+p.name+" · "+$("nto").value,"g",p);render();toast("Note saved to "+p.name+"'s file")}
+function setLang(p,l){if(p.lang===l)return;p.lang=l;say(p,"sys","Language set to "+LN[l]);ev("Language changed",p.name+" · "+LN[l],"g",p);
+ const q={CHECKIN:"greet",OFFER:"offer2",PENDING:"offer2",MISSED:"missed",SLOTS:"slots",ADMITTED:"admit",SCHEDULED:"disch"}[p.st]||(p.st==="TRIAGE"?(p.q==="pain"?"askPain":"askSym"):null);if(q&&!p.optOut)ai(p,T(p,q));render()}
+function toggleVoice(p){p.voice=!p.voice;say(p,"sys",p.voice?"📞 AI voice call started · "+LN[p.lang]:"Voice call ended · back to WhatsApp chat");ev(p.voice?"AI voice call started":"AI voice call ended",p.name+" · "+LN[p.lang],"g",p);
+ if(p.voice){const last=[...p.chat].reverse().find(m=>m.f==="cg");if(last&&!p.optOut)say(p,"cg",last.t)}render()}
+
+/* ---------- categories & tasks ---------- */
+function concern(p){const e=openEsc(p);if(e)return{t:e.why,at:e.at,k:"urgent"};
+ if(p.st==="MISSED")return{t:"Missed follow-up appointment",at:p.missAt,k:"review"};
+ if(p.cb&&!p.cb.done)return{t:"Nurse callback due · "+p.cb.why,at:p.cb.at,k:"review"};
+ if(p.lab&&p.lab.st==="READY")return{t:p.lab.name+" ready · doctor review pending",at:p.lab.at,k:"review"};
+ if(p.lab&&p.lab.st==="REVIEWED")return{t:"Doctor reviewed "+p.lab.name+" · patient not informed yet",at:p.lab.at,k:"review"};
+ if(p.optOut)return{t:"Opted out of automated messages",at:p.optAt,k:"routine"};
+ if(p.lab&&p.lab.st==="ORDERED")return{t:p.lab.name+" · result pending",at:p.lab.at,k:"routine"};
+ return{t:"",at:0,k:"routine"}}
+const cat=p=>concern(p).k,CO={urgent:0,review:1,routine:2};
+const sortP=(a,b)=>CO[cat(a)]-CO[cat(b)]||(b.sev?b.sev.score:0)-(a.sev?a.sev.score:0)||PRI[a.st]-PRI[b.st];
+function tasks(){const T=[];
+ S.esc.forEach(e=>{const p=gp(e.pid),crit=e.band==="Critical",sub=p.name+" · ID "+p.mrn+" · "+e.why;
+  T.push({role:"nurse",pid:p.id,title:(crit?"Call now · ":"Call patient · ")+e.band+" "+e.score+"/100",sub,done:e.called||e.done,pri:crit?0:1,st:e.called||e.done?["Done","g"]:e.to?["In progress · "+e.to,"b"]:["Open · nobody assigned","r"],btns:e.called||e.done?[]:[["Mark called","called",e.id,1],["Open","rev",p.id]]});
+  T.push({role:"doctor",pid:p.id,doc:p.doc,title:"Clinical review of "+e.band.toLowerCase()+" concern",sub,done:e.done,pri:crit?0:1,st:e.done?["Resolved","g"]:e.to?["In progress · "+e.to,"b"]:["Open · nobody assigned","r"],btns:e.done?[["Reopen","reopen",e.id]]:[["Review","rev",p.id,1]]})});
+ S.emer.forEach(r=>{const p=gp(r.pid),amb=r.kind==="amb";
+  T.push({role:"nurse",pid:p.id,title:amb?(r.st==="REQUESTED"?"Confirm ambulance dispatch":"Receive ambulance patient in Emergency"):"Prepare Emergency OPD · token "+r.token,sub:p.name+" · ID "+p.mrn+" · "+(r.by==="patient"?"requested by patient":"booked by care team")+" "+ago(r.at),done:r.st==="ARRIVED",pri:0,st:r.st==="ARRIVED"?["Arrived","g"]:r.st==="DISPATCHED"?["Ambulance on the way","b"]:["Open","r"],btns:r.st==="ARRIVED"?[]:[[amb&&r.st==="REQUESTED"?"Confirm dispatch":"Mark arrived","emer",r.id,1]]})});
+ S.pts.forEach(p=>{const sub=p.name+" · ID "+p.mrn;
+  if(p.cb)T.push({role:"nurse",pid:p.id,title:"Call back today",sub:sub+" · "+p.cb.why,done:p.cb.done,pri:2,st:p.cb.done?["Done · "+(p.cb.by||""),"g"]:["Open","a"],btns:p.cb.done?[]:[["Mark called","cbd",p.id],["Open","op",p.id]]});
+  if(p.lab&&p.lab.st!=="ORDERED"){const z=p.lab.st;
+   T.push({role:"doctor",pid:p.id,doc:p.doc,title:"Review "+p.lab.name,sub:sub+" · "+p.doc,done:z!=="READY",pri:3,st:z==="READY"?["Open · doctor review pending","a"]:["Reviewed","g"],btns:z==="READY"?[["Mark reviewed","lrev",p.id]]:z==="REVIEWED"?[["Undo","lunrev",p.id]]:[]});
+   T.push({role:"coord",pid:p.id,title:"Tell patient the result was reviewed",sub:sub+" · "+p.lab.name,done:z==="INFORMED",pri:3,st:z==="INFORMED"?["Done","g"]:z==="REVIEWED"?["Open · patient not informed","a"]:["Waiting for doctor review","n"],btns:z==="REVIEWED"?[["Inform patient","linf",p.id]]:z==="INFORMED"?[["Undo","lunif",p.id]]:[]})}
+  if(p.st==="MISSED")T.push({role:"coord",pid:p.id,title:"Rebook missed follow-up",sub:sub+" · reschedule offered on WhatsApp"+(p.notes.length?" · see notes":""),done:false,pri:2,st:["Open","a"],btns:[["Open file","op",p.id]]});
+  if(p.optOut)T.push({role:"coord",pid:p.id,title:"Opted out · follow up by phone if clinically needed",sub:sub+" · automated messages paused",done:false,pri:4,st:["Open","n"],btns:[["Open file","op",p.id]]})});
+ return T.map((t,i)=>({...t,i})).sort((a,b)=>(a.done-b.done)||a.pri-b.pri||a.i-b.i)}
+const forMe=t=>ROLE==="admin"||(t.role===ROLE&&(ROLE!=="doctor"||t.doc===ROLES.doctor.name));
+const taskHtml=t=>`<div class="tk ${t.done?"dn":""}"><div><b>${esc(t.title)}</b><small>${esc(t.sub)}</small><div class="pls"><span class="own ${t.role}">${ROLES[t.role].label}</span><span class="pill ${t.st[1]}">${esc(t.st[0])}</span></div></div><div class="bt2">${t.btns.map(b=>`<button class="ab ${b[3]?"hot":""}" data-a="${b[1]}" data-i="${b[2]}">${b[0]}</button>`).join("")}</div></div>`;
+
+/* ---------- next step per role ---------- */
+function act(p){const e=openEsc(p),le=liveEmer(p);
+ if(e){if(ROLE==="nurse"&&le&&le.st!=="ARRIVED")return[le.kind==="amb"&&le.st==="REQUESTED"?"Confirm ambulance":"Mark arrived","emer",le.id,1];if(ROLE==="nurse"&&!e.called)return["Call now","rev",p.id,1];return["Review now","rev",p.id,1]}
+ if(p.cb&&!p.cb.done&&(ROLE==="nurse"||ROLE==="admin"))return["Mark called","cbd",p.id];
+ if(p.lab&&p.lab.st==="READY"&&(ROLE==="doctor"||ROLE==="admin"))return["Mark reviewed","lrev",p.id];
+ if(p.lab&&p.lab.st==="REVIEWED"&&(ROLE==="coord"||ROLE==="admin"))return["Inform patient","linf",p.id];
+ if(FF[p.st]&&ROLE!=="doctor"&&!p.optOut)return[{ADMITTED:"Discharge",SCHEDULED:"Send check-in",PENDING:"Message again",BOOKED:"Send reminder",REMINDED:"Mark visit done"}[p.st],"adv",p.id];
+ return["Open file","op",p.id]}
+const stageOf=p=>openEsc(p)?(openEsc(p).band==="Critical"?"Critical · emergency team alerted":"Patient reported a problem"):STG[p.st];
+function rowHtml(p){const c=concern(p),k=c.k,a=act(p),e=openEsc(p),le=liveEmer(p);
+ const meta=k==="urgent"?(e.to?(e.auto?"Auto-assigned to ":"Assigned to ")+esc(e.to):"Goes to "+esc(p.doc)+' in <b class="cd" data-due="'+e.due+'">'+mmss(e.due-Date.now())+"</b> if nobody acknowledges")+(le?" · "+(le.kind==="amb"?"🚑 ambulance "+le.st.toLowerCase():"🏥 OPD token "+le.token):""):c.at?ago(c.at):"";
+ return`<div class="tr ${p.id===sel&&S.view==="patients"?"sel":""} ${k==="urgent"?"urg":""}" data-a="op" data-i="${p.id}"><div class="pt1">${avat(p)}<div><b>${esc(p.name)}</b><small>ID ${p.mrn}${p.lang!=="en"?" · "+LN[p.lang]:""}</small></div></div><div>${stageOf(p)}${c.t?`<small class="cn">${esc(c.t)}</small>`:""}${meta?`<small>${meta}</small>`:""}</div><div>${sevPill(p)}</div><div><button class="ab ${a[3]?"hot":""}" data-a="${a[1]}" data-i="${a[2]}">${a[0]}</button></div></div>`}
+
+/* ---------- metrics ---------- */
+function live(){const P=S.pts;return{dis:P.filter(p=>!["NONE","ADMITTED"].includes(p.st)).length,eng:P.filter(p=>p.chat.some(m=>m.f==="pt")).length,book:P.filter(p=>p.appt).length,vis:P.filter(p=>p.st==="COMPLETED").length,msgs:P.reduce((a,p)=>a+p.chat.filter(m=>m.f==="cg").length,0),opt:P.filter(p=>p.optOut).length}}
+function metrics(){const l=live(),dis=BASE.dis+l.dis,eng=BASE.eng+l.eng,book=BASE.book+l.book,vis=BASE.vis+l.vis,rep=BASE.rep;
+ const rc=vis*PRICE.consult,rd=vis*PRICE.diag,rr=rep*PRICE.rep,msgs=BASE.msgs+l.msgs;
+ return{dis,eng,book,vis,rep,rc,rd,rr,rev:rc+rd+rr,msgs,hrs:Math.round(msgs*3/60),emer:BASE.emer+S.esc.length,opt:BASE.opt+l.opt}}
+
+/* ---------- rendering ---------- */
+const K=(i,bg,fg,v,l,sub,c="")=>`<div class="card k"><span class="bx" style="background:${bg};color:${fg}">${ic(i,26)}</span><div><b>${v}</b><span class="l">${l}</span><small class="${c}">${sub}</small></div></div>`;
+function go(v){if(!NAVR[ROLE].includes(v))v="home";S.view=v;document.querySelectorAll(".view").forEach(x=>x.hidden=x.id!=="v-"+v);render();scrollTo({top:0})}
+function renderShell(){const T=tasks().filter(t=>forMe(t)&&!t.done).length,nv=VIEWS.filter(v=>NAVR[ROLE].includes(v[0]));
+ const rsub=`<div class="nsub" role="group" aria-label="View Home as"><span>View as</span>${Object.entries(ROLES).map(([k,v])=>`<button class="nsb ${k===ROLE?"on":""}" data-a="role" data-v="${k}" aria-pressed="${k===ROLE}">${v.label}</button>`).join("")}</div>`;
+ $("nav").innerHTML=nv.map(v=>`<button class="nav ${S.view===v[0]?"on":""}" data-go="${v[0]}">${ic(v[1])}${v[2]}${v[0]==="tasks"?`<i>${T||""}</i>`:""}</button>`+(v[0]==="home"?rsub:"")).join("");
+ $("mnav").innerHTML=nv.map(v=>`<button class="${S.view===v[0]?"on":""}" data-go="${v[0]}">${v[2]}${v[0]==="tasks"&&T?" ("+T+")":""}</button>`).join("");
+ document.querySelectorAll(".hn").forEach(x=>x.textContent=HN);$("sav").textContent=$("tav").textContent=me().ini;$("snm").textContent=me().name;$("srl").textContent=me().label;$("role").value=ROLE;
+ const L=S.esc.filter(e=>!e.done);$("bd").hidden=!L.length;$("urg").hidden=!L.length;
+ const LS=L.slice().sort((a,b)=>b.score-a.score);$("urg").innerHTML=(S.uAll?LS:LS.slice(0,2)).map(e=>{const p=gp(e.pid),crit=e.band==="Critical",le=liveEmer(p);return`<div class="ub1 ${crit?"crit":""}"><span class="uic">${ic(crit?"amb":"warn",28)}</span><div class="ut"><b>${crit?"CRITICAL – Act now":"URGENT – Needs clinical review"} · ${e.score}/100</b><span>${esc(p.name)} · ID ${p.mrn} · ${esc(e.why)}</span><small>Escalated ${ago(e.at)} · ${e.to?(e.auto?"Auto-assigned to ":"Assigned to ")+esc(e.to):"Nobody has acknowledged yet · goes to "+esc(p.doc)+' automatically in <b class="cd" data-due="'+e.due+'">'+mmss(e.due-Date.now())+"</b>"}${le?" · "+(le.kind==="amb"?"🚑 Ambulance "+le.st.toLowerCase():"🏥 Emergency OPD token "+le.token):""}</small></div><div class="ua"><button data-a="op" data-i="${p.id}">Open file</button><button class="w" data-a="rev" data-i="${p.id}">Review now</button>${e.to?"":`<button data-a="ff15" data-i="${e.id}" title="Demo: pretend nobody acknowledged in time">Skip timer ⏩</button>`}</div></div>`}).join("")+(LS.length>2?`<button class="ubm" data-a="uall">${S.uAll?"Show fewer":"+ "+(LS.length-2)+" more urgent case"+(LS.length>3?"s":"")+" · show all"}</button>`:"")}
+function renderHome(){const r=ROLE,nm=me().name.replace(/^Dr\. /,"Dr. "),fn=r==="doctor"?nm:nm.split(" ")[0];
+ $("hello").textContent="Good morning, "+fn;$("dd").textContent=dl(S.today);
+ $("hsub").textContent={coord:"Follow-ups, bookings and patient messages for today",nurse:"Your patients to call and triage today",doctor:"Clinical reviews waiting for you",admin:"How follow-ups are turning into visits and revenue"}[r];
+ const P=S.pts,eo=S.esc.filter(e=>!e.done),T=tasks(),m=metrics(),active=P.filter(p=>!["NONE","COMPLETED"].includes(p.st));
+ if(r==="coord")$("kp").innerHTML=K("users","var(--g)","var(--gt)",18+active.length,"Active journeys","↑ 2 from yesterday","up")+K("warn","var(--r)","var(--rt)",P.filter(p=>cat(p)!=="routine").length,"Need attention",eo.length+" urgent · "+P.filter(p=>cat(p)==="review").length+" to review",eo.length?"dn":"up")+K("cal","var(--b)","var(--bt)",14+P.filter(p=>["BOOKED","REMINDED"].includes(p.st)).length,"Upcoming follow-ups","Next 7 days")+K("ok","var(--g)","var(--gt)",11+P.filter(p=>p.appt).length,"Booked by AI","This week · no staff calls needed","up");
+ if(r==="nurse"){const calls=T.filter(t=>t.role==="nurse"&&!t.done&&/Call/.test(t.title)).length,em=S.emer.filter(x=>x.st!=="ARRIVED").length;
+  $("kp").innerHTML=K("warn","var(--r)","var(--rt)",eo.length,"Urgent cases",eo.filter(e=>e.band==="Critical").length+" critical","dn")+K("phone","var(--a)","var(--at)",calls,"Calls to make","Urgent + callbacks")+K("amb","var(--r)","var(--rt)",em,"Emergency requests","Ambulance & Emergency OPD",em?"dn":"")+K("msg","var(--b)","var(--bt)",P.filter(p=>p.st==="TRIAGE").length,"In AI symptom check","Being asked about pain now")}
+ if(r==="doctor"){const my=P.filter(mine);$("kp").innerHTML=K("warn","var(--r)","var(--rt)",eo.filter(e=>mine(gp(e.pid))).length,"Urgent reviews","Your patients","dn")+K("doc","var(--a)","var(--at)",my.filter(p=>p.lab&&p.lab.st==="READY").length,"Results to review","Waiting for you")+K("users","var(--b)","var(--bt)",my.filter(p=>!["NONE","COMPLETED"].includes(p.st)).length,"My active patients","In follow-up journeys")+K("ok","var(--g)","var(--gt)",3+S.esc.filter(e=>e.done&&mine(gp(e.pid))).length+my.filter(p=>p.lab&&["REVIEWED","INFORMED"].includes(p.lab.st)).length,"Reviewed today","Concerns & results","up")}
+ if(r==="admin")$("kp").innerHTML=K("rupee","var(--g)","var(--gt)",inr(m.rev),"Revenue from follow-ups","This month · ↑ 18% vs Sep","up")+K("trend","var(--a)","var(--at)",pct(m.rep,m.vis),"Repeat-visit rate",num(m.rep)+" patients came back","up")+K("msg","var(--b)","var(--bt)",pct(m.eng,m.dis),"Patients engaged","Replied on WhatsApp or voice")+K("clock","var(--g)","var(--gt)",m.hrs+" hrs","Staff time saved",num(m.msgs)+" automated messages","up");
+ // left card
+ $("hwl").innerHTML=r==="admin"?"Open Insights "+ic("right",14):"All patients "+ic("right",14);$("hwl").dataset.go=r==="admin"?"insights":"patients";
+ if(r==="admin"){$("hwi").innerHTML=ic("funnel",22);$("hwt").textContent="Engagement → revenue";$("hws").textContent="This month, from discharge to repeat visit";$("hwork").innerHTML=funnelHtml(m)}
+ else{$("hwi").innerHTML=ic("users",22);
+  let L,t,s;
+  if(r==="nurse"){L=P.filter(p=>openEsc(p)||(p.cb&&!p.cb.done)||liveEmer(p)||p.st==="TRIAGE"||(p.sev&&p.sev.score>=25&&p.st!=="COMPLETED"));t="Patients to call & triage";s="Sorted by severity · highest first"}
+  else if(r==="doctor"){L=P.filter(p=>mine(p)&&p.st!=="NONE");t="Your patients";s="Urgent concerns and results first"}
+  else{L=P.filter(p=>p.st!=="NONE"||(p.lab&&p.lab.st!=="INFORMED"));t="Patients needing you";s="Urgent first · simple status for every patient"}
+  L.sort(sortP);$("hwt").textContent=t;$("hws").textContent=s;
+  $("hwork").innerHTML=`<div class="sc"><div class="tr hd"><span>Patient</span><span>What is happening</span><span>Severity</span><span>Next step</span></div>${L.slice(0,7).map(rowHtml).join("")||'<div class="empty">Nothing needs you right now.</div>'}</div>`}
+ const MT=T.filter(forMe),open=MT.filter(t=>!t.done);
+ $("htt").textContent=r==="admin"?"Open work across teams":"Your tasks";$("hts").textContent=r==="admin"?"Who is waiting on what":open.length+" open · "+(MT.length-open.length)+" done";
+ if(r==="admin"){const by=k=>T.filter(t=>t.role===k&&!t.done).length;$("htasks").innerHTML=["nurse","doctor","coord"].map(k=>`<div class="tk"><div><b>${ROLES[k].label}s</b><small>${T.filter(t=>t.role===k&&!t.done).slice(0,2).map(t=>esc(t.title)).join(" · ")||"All clear"}</small></div><div class="bt2"><span class="pill ${by(k)?"a":"g"}">${by(k)} open</span></div></div>`).join("")+`<div class="tk"><div><b>Patients opted out</b><small>Automated messages paused at their request</small></div><div class="bt2"><span class="pill n">${S.pts.filter(p=>p.optOut).length}</span></div></div>`}
+ else $("htasks").innerHTML=open.slice(0,6).map(taskHtml).join("")||'<div class="empty">No open tasks. Nice work.</div>'}
+function renderPatients(){const P=S.pts.filter(mine),cnt={all:P.length,urgent:0,review:0,routine:0,optout:P.filter(p=>p.optOut).length};P.forEach(p=>cnt[cat(p)]++);
+ $("psub").textContent=ROLE==="doctor"?"Showing your patients · "+ROLES.doctor.name:"Every patient's file, conversation and journey in one place";
+ $("pfl").innerHTML=[["all","All"],["urgent","Urgent"],["review","Review"],["routine","Routine"],["optout","Opted out"]].map(([k,l])=>`<button class="fc ${S.pf===k?"on":""} ${k==="urgent"&&cnt[k]?"hot":""}" data-a="pf" data-v="${k}">${l} <b>${cnt[k]}</b></button>`).join("");
+ const L=P.filter(p=>S.pf==="all"||(S.pf==="optout"?p.optOut:cat(p)===S.pf)).sort(sortP);
+ if(!mine(gp(sel)))sel=(L[0]||P[0]).id;
+ $("plist").innerHTML=L.map(p=>`<button class="pr ${p.id===sel?"sel":""}" data-a="op" data-i="${p.id}">${avat(p)}<div><b>${esc(p.name)}</b><small>${esc(stageOf(p))}</small></div>${p.sev?sevPill(p):p.optOut?'<span class="pill n">Opted out</span>':""}</button>`).join("")||'<div class="empty">No patients in this group.</div>';
+ const p=gp(sel),e=openEsc(p),s=STS[p.st];
+ $("pfh").innerHTML=`<div class="pfh">${avat(p)}<div><h2>${esc(p.name)}</h2><p>ID ${p.mrn} · ${esc(p.doc)} · ${p.phone}</p><div class="tags">${e?`<span class="pill u">${e.band==="Critical"?"CRITICAL":"URGENT"}</span>`:`<span class="pill ${s[1]}">${s[0]}</span>`} ${sevPill(p)} <span class="pill n">${LN[p.lang]}</span> <span class="pill ${p.optOut?"r":"g"}">${p.optOut?"Opted out of automated messages":"WhatsApp consent ✓"}</span>${p.notes.length?` <span class="pill a">${p.notes.length} note${p.notes.length>1?"s":""}</span>`:""}</div></div><div class="acts">${e?`<button class="ab hot" data-a="rev" data-i="${p.id}">Review urgent case</button>`:""}<button class="ab" data-a="ehr" data-i="${p.id}">Hospital event</button></div></div>`;
+ // conversation
+ $("pl").innerHTML=LOGO(34);$("lang").value=p.lang;$("vbtn").classList.toggle("on",p.voice);$("vbtn").setAttribute("aria-pressed",p.voice);$("vbt").textContent=p.voice?"End voice call":"Voice call";
+ const ch=CHIPS(p),wave=n=>Array.from({length:22},(_,i)=>`<i style="height:${4+((i*7+n*3)%17)}px"></i>`).join("");
+ $("chat").innerHTML=(p.chat.length?p.chat.map((m,i)=>m.f==="sys"?`<div class="m sys">${esc(m.t)}</div>`:`<div class="m ${m.f}">${m.v?`<div class="vb"><span class="vp">▶</span><span class="wave">${wave(i)}</span><span class="vd">0:${pad(6+m.t.length%50)}</span></div><div class="vt">${esc(m.t)}</div>`:esc(m.t)}<small>${m.m}${m.f==="pt"?"<u>✓✓</u>":""}</small></div>`).join(""):'<div class="em">No conversation yet. Use “Hospital event” to admit or discharge this patient.</div>')+(ch?`<div class="qr">${ch.map(c=>`<button data-a="c" data-v="${c[0]}">${esc(c[1]||Lb(p,c[0]))}</button>`).join("")}</div>`:"");
+ $("chat").scrollTop=1e6;const can=p.st!=="NONE";$("tx").disabled=$("sd").disabled=!can;$("tx").placeholder=can?(p.voice?"Say something as the patient…":"Type as the patient…"):"No active journey";
+ // severity
+ const v=p.sev;$("sev").innerHTML=v?`<div class="sv1"><b>${v.score}</b><span class="o">/ 100</span>${sevPill(p)}</div><div class="meter"><i style="left:${v.score}%"></i></div><div class="mlab"><span>Low</span><span>Moderate</span><span>High</span><span>Critical</span></div>
+  <ul class="brk"><li><span>Pain score</span><b>${v.pain==null?"Not asked · red flag first":v.pain+"/10 → +"+v.pain*6}</b></li>${v.flags.map(f=>`<li><span>${FLAGN[f]}</span><b>${f==="chest"||f==="breath"?"Red flag → always Critical":f==="bleed"?"Red flag → at least High":"+"+FLAGW[f]}</b></li>`).join("")}${v.worse?`<li><span>Says feeling worse</span><b>+10</b></li>`:""}<li><span>Action taken</span><b>${v.score>=75?"Emergency team alerted":v.score>=50?"Urgent escalation":v.score>=25?"Nurse callback today":"Added to record"}</b></li></ul>`
+  :`<p style="margin:0;color:var(--mu)">Not assessed yet. When a patient reports pain or feels worse, the AI asks for a 0–10 pain score and checks for red-flag symptoms, then scores the answers.</p>`;
+ // timeline
+ $("tls").textContent="Step by step · "+first(p);
+ const d=DONE[p.st],E=p.st==="ESCALATED",TL=[["recv","Hospital record received",p.st==="NONE"?"Waiting for hospital event":(EVN[p.evType]||p.evType)+(p.st==="ADMITTED"?" · welcome message sent":"")],["checkin","Day-1 check-in",d>=2?"Sent on "+(p.voice?"voice call":"WhatsApp"):p.st==="SCHEDULED"?"Due tomorrow":p.st==="ADMITTED"?"After discharge":"Pending"],["resp","Patient reply & AI symptom check",p.st==="TRIAGE"?"AI is asking questions":d>=3||E?p.resp||"Reply received":"Waiting for patient reply"],["booking","Follow-up booking",d>=4?(p.appt?when(p):"Booked"):E?"Paused · care team needs to act":p.st==="PENDING"?"Will book later":p.st==="OFFER"?"Booking offered":p.st==="SLOTS"?"Choosing a slot":"Pending"],["reminder","Reminder message",d>=5?"Sent":p.st==="BOOKED"?"Day before the visit":"Pending"],["done","Consultation completed",p.st==="COMPLETED"?"Done":p.st==="MISSED"?"Missed · we are following up":p.st==="REMINDED"?"Waiting for the visit":"Pending"]];
+ $("tl").innerHTML=TL.map(([id,t,sub],i)=>{let c=i<d?"done":i===d?"cur":"pend";if(E){c=i<2?"done":i===2?"alert":"pend"}if(p.st==="MISSED"&&i===5)c="alert";const z=p.ts[id];
+  return`<div class="s ${c}"><div class="dot">${c==="done"?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>':c==="alert"?"!":""}</div><div><b>${t}</b><span>${esc(sub)}</span></div><div class="rt"><span>${z?z[0]:"—"}</span><span>${z?z[1]:""}</span></div></div>`}).join("");
+ $("ff").disabled=!FF[p.st];$("fft").textContent=FF[p.st]||"No timer pending";
+ // notes
+ const opts=["Patient file","Discharge summary"].concat(p.lab?["Test: "+p.lab.name]:[]),cur=$("nto").value;$("nto").innerHTML=opts.map(o=>`<option>${esc(o)}</option>`).join("");if(opts.includes(cur))$("nto").value=cur;
+ $("nl").innerHTML=p.notes.slice().reverse().map(n=>`<div class="nt1"><p>${esc(n.text)}</p><small>${esc(n.by)} · ${esc(n.role)} · ${ago(n.at)} · on ${esc(n.to)}</small></div>`).join("")||'<p style="margin:0;color:var(--mu)">No notes yet.</p>';
+ // labs
+ const SN=[["Appointment completed","Appointment completed"],["Test done","Test pending"],["Doctor reviewed","Doctor review pending"],["Patient informed","Patient not informed yet"],["Follow-up due","Follow-up due"]],CI={ORDERED:1,READY:2,REVIEWED:3,INFORMED:4};
+ $("labc").hidden=!p.lab;if(p.lab){const z=p.lab.st,c=CI[z],rev=z==="REVIEWED"||z==="INFORMED",inf=z==="INFORMED";
+  const btn=z==="ORDERED"?`<button class="ab" data-a="lready" data-i="${p.id}">Result arrived</button>`:z==="READY"?`<button class="ab" data-a="lrev" data-i="${p.id}">Mark reviewed by doctor</button>`:z==="REVIEWED"?`<button class="ab" data-a="linf" data-i="${p.id}">Inform patient</button> <button class="ab" data-a="lunrev" data-i="${p.id}">Undo</button>`:`<button class="ab" data-a="lunif" data-i="${p.id}">Undo</button>`;
+  $("rl").innerHTML=`<div class="rr"><div class="rh"><div><b>${esc(p.lab.name)}</b><small>${esc(p.doc)} · ${ago(p.lab.at)}</small></div><div>${btn}</div></div><div class="stp">${SN.map((n,i)=>`<span class="sp ${i<c?"d":i===c?"c":""}">${i<c?"✓ "+n[0]:i===4?"Follow-up due "+when(p):n[1]}</span>`).join("")}</div><div class="fg"><span class="pill ${rev?"g":"a"}">Doctor reviewed: ${rev?"Yes":"Not yet"}</span><span class="pill ${inf?"g":"a"}">Patient informed: ${inf?"Yes":"Not yet"}</span></div></div>`}}
+function renderAppts(){const P=S.pts.filter(mine),ap=P.filter(p=>p.appt),em=S.emer.filter(r=>mine(gp(r.pid)));
+ $("apk").innerHTML=K("cal","var(--b)","var(--bt)",14+ap.filter(p=>["BOOKED","REMINDED"].includes(p.st)).length,"Upcoming follow-ups","Next 7 days")+K("ok","var(--g)","var(--gt)",11+ap.length,"Booked by AI","This week · on WhatsApp","up")+K("amb","var(--r)","var(--rt)",em.filter(r=>r.st!=="ARRIVED").length,"Emergency requests","Open right now",em.some(r=>r.st!=="ARRIVED")?"dn":"")+K("hosp","var(--a)","var(--at)",(5-S.emer.filter(r=>r.kind==="opd").length)+" of 5","Emergency OPD priority slots","Free today");
+ $("eml").innerHTML=em.slice().reverse().map(r=>{const p=gp(r.pid),amb=r.kind==="amb",done=r.st==="ARRIVED";
+  return`<div class="er ${done?"ok":""}"><span class="bx">${ic(amb?"amb":"hosp",22)}</span><div><b>${amb?"Ambulance to home":"Priority Emergency OPD · token "+r.token} · ${esc(p.name)}</b><small>ID ${p.mrn} · ${p.sev?p.sev.band+" "+p.sev.score+"/100 · ":""}${r.by==="patient"?"Requested by patient on WhatsApp":"Booked by care team"} · ${ago(r.at)}</small><small><b style="display:inline">${done?"Arrived":r.st==="DISPATCHED"?"Ambulance on the way · ETA 18 min":amb?"Waiting for dispatch confirmation":"Patient on the way"}</b></small></div><div>${done?'<span class="pill g">Arrived</span>':`<button class="ab hot" data-a="emer" data-i="${r.id}">${amb&&r.st==="REQUESTED"?"Confirm dispatch":"Mark arrived"}</button>`}</div></div>`}).join("")||'<div class="empty">No emergency requests. When a patient’s answers score High or Critical, they can ask for an ambulance or a priority Emergency OPD slot right from WhatsApp.</div>';
+ const rows=ap.slice().sort((a,b)=>a.appt.date-b.appt.date);
+ $("apl").innerHTML=rows.length?`<table class="at"><thead><tr><th>When</th><th>Patient</th><th>Visit</th><th>Status</th><th>Booked via</th><th></th></tr></thead><tbody>${rows.map(p=>{const st=p.st==="COMPLETED"?["Completed","g"]:p.st==="MISSED"?["Missed · rebooking","a"]:p.st==="REMINDED"?["Reminder sent","g"]:["Confirmed","b"];
+  return`<tr><td><b>${esc(p.appt.slot.split(" · ").slice(0,2).join(" · "))}</b><small>${esc(p.appt.slot.split(" · ")[2]||"")}</small></td><td><b>${esc(p.name)}</b><small>ID ${p.mrn} · ${esc(p.doc)}</small></td><td>Cardiology follow-up<small>${p.appt.ext}</small></td><td><span class="pill ${st[1]}">${st[0]}</span></td><td>WhatsApp · AI<small>${LN[p.lang]}</small></td><td><button class="ab" data-a="op" data-i="${p.id}">Open file</button></td></tr>`}).join("")}</tbody></table>`:'<div class="empty">No follow-ups booked yet.</div>'}
+function renderTasks(){const T=tasks(),M=T.filter(forMe);if(ROLE==="admin")S.tf="all";const L=S.tf==="all"?T:M,open=L.filter(t=>!t.done);
+ $("tsub").textContent=ROLE==="admin"?"Every team's work in one list":"Only what a "+me().label.toLowerCase()+" needs to do · "+open.length+" open";
+ $("tfl").innerHTML=(ROLE==="admin"?[["all","All teams",T.filter(t=>!t.done).length]]:[["mine","My tasks",M.filter(t=>!t.done).length],["all","All teams",T.filter(t=>!t.done).length]]).map(([k,l,n])=>`<button class="fc ${S.tf===k?"on":""}" data-a="tf" data-v="${k}">${l} <b>${n}</b></button>`).join("");
+ $("tall").innerHTML=(open.length?`<div class="sub2">Open</div>${open.map(taskHtml).join("")}`:'<div class="empty">No open tasks.</div>')+(L.length>open.length?`<div class="sub2">Completed</div>${L.filter(t=>t.done).map(taskHtml).join("")}`:"")}
+function funnelHtml(m){const st=[["Discharged",m.dis],["Replied on WhatsApp / voice",m.eng],["Follow-up booked",m.book],["Visit completed",m.vis],["Came back · repeat visit or procedure",m.rep]];
+ return st.map(([l,v],i)=>`<div class="fn"><span>${l}</span><div class="fb" role="img" aria-label="${l}: ${v}"><i style="width:${Math.max(8,v/m.dis*100)}%">${num(v)}</i></div><em>${i?pct(v,st[i-1][1])+" of prev":"100%"}</em></div>`).join("")+`<div class="fnote"><b>${pct(m.vis,m.dis)}</b> of discharged patients completed their follow-up (it was 31% before CareGraph). Every visit is worth about ₹${num(PRICE.consult+PRICE.diag)}; every repeat procedure about ₹${num(PRICE.rep)}.</div>`}
+function renderInsights(){const m=metrics();
+ $("ik").innerHTML=K("rupee","var(--g)","var(--gt)",inr(m.rev),"Revenue from follow-ups","↑ 18% vs September","up")+K("trend","var(--a)","var(--at)",pct(m.rep,m.vis),"Repeat-visit rate",num(m.rep)+" of "+num(m.vis)+" came back","up")+K("users","var(--b)","var(--bt)",pct(m.eng,m.dis),"Patients engaged",num(m.eng)+" replied")+K("clock","var(--g)","var(--gt)",m.hrs+" hrs","Staff time saved","~3 min per automated message","up");
+ $("fun").innerHTML=funnelHtml(m);
+ $("rev").innerHTML=`<div class="rv"><b>Follow-up consultations</b><strong>${inr(m.rc)}</strong><small>${num(m.vis)} visits × ₹${num(PRICE.consult)}</small></div><div class="rv"><b>Tests &amp; diagnostics</b><strong>${inr(m.rd)}</strong><small>${num(m.vis)} visits × ₹${num(PRICE.diag)} average</small></div><div class="rv"><b>Repeat procedures &amp; admissions</b><strong>${inr(m.rr)}</strong><small>${num(m.rep)} patients × ₹${num(PRICE.rep)} average</small></div><div class="rtot"><span>Total this month</span><strong>${inr(m.rev)}</strong></div><div class="fnote">Revenue is counted only when a visit can be traced back to a CareGraph message, booking or reminder.</div>`;
+ $("auto").innerHTML=`<div class="st3"><div><b>${num(m.msgs)}</b><small>Messages sent automatically (admission, discharge, check-ins, reminders)</small></div><div><b>${m.hrs} hrs</b><small>Staff phone time saved this month</small></div><div><b>${m.emer}</b><small>Emergencies flagged early by severity scoring</small></div><div><b>${pct(m.opt,m.dis)}</b><small>Opt-out rate · ${m.opt} patients replied STOP</small></div></div><div class="fnote">🛡 Safety: 0 reassuring messages sent by the AI. Every High or Critical answer reached a human.</div>`;
+ $("camp").innerHTML=S.camp.map(c=>`<div class="cp"><div class="rh"><div><b>${esc(c.name)}</b><small>${esc(c.src)}</small></div><span class="pill ${c.st==="Running"?"g":c.st==="Draft"?"n":"b"}">${c.st}</span></div><div class="cbar" role="img" aria-label="${c.cons} of ${c.aud} have consent"><i style="width:${c.cons/c.aud*100}%"></i></div><div class="cleg"><span>${num(c.cons)} with consent · will be contacted</span><span class="x">${num(c.aud-c.cons)} excluded · no consent</span></div>${c.res?`<small style="display:block;margin-top:6px;color:var(--gt);font-weight:600">${esc(c.res)}</small>`:""}${c.st==="Draft"?`<button class="ab" style="margin-top:8px" data-a="camp" data-i="${c.id}">Send for compliance approval</button>`:""}</div>`).join("")+`<div class="fnote">External health data is used only where the law allows and the person has given consent. Contacts without recorded consent are excluded automatically, and every message includes STOP.</div>`}
+function renderInteg(){const em=S.pts.reduce((a,p)=>a+p.chat.filter(m=>m.v).length,0);
+ $("chn").innerHTML=K("hosp","var(--b)","var(--bt)","Connected","Hospital EHR / HIS","Admissions, discharges, tests","up")+K("msg","#DCF5E3","#12804A","Connected","WhatsApp Business","Templates approved","up")+K("mic","var(--a)","var(--at)",em+" today","AI voice calls","For patients who prefer talking")+K("globe","var(--g)","var(--gt)","3 live","Languages","English · Hindi · Kannada (Tamil, Telugu next)");
+ const L=(S.lAll?S.log:S.log.slice(-10)).slice().reverse(),col={g:"#22A06B",r:"#D93A2B",a:"#E8A317",n:"#8A9AA0"};
+ $("lg").innerHTML=L.map(l=>`<div class="l1"><i style="background:${col[l.c]}"></i><time>${l.t}</time><div><b>${esc(l.title)}</b><span>${esc(l.sub)}</span></div></div>`).join("");$("vl").firstChild.textContent=S.lAll?"Show less ":"View all "}
+const RULES=[["Never reassure","The AI never tells a patient they are fine, normal or have nothing to worry about. Only a clinician can judge that."],["Red flags always escalate","Chest pain, breathlessness or heavy bleeding are scored Critical/High and alert a human immediately, even if the patient opted out."],["Always give 108","Every symptom reply and every escalation tells the patient to call 108 if things get worse."],["Ask, don't diagnose","The AI asks set questions (pain 0–10, red-flag symptoms). It never suggests a diagnosis, medicine or dose."],["Humans decide","The AI scores and routes. Nurses and doctors decide treatment, and every escalation needs a human to acknowledge it."],["Unclear means ask again","If a reply is unclear, the AI asks again or hands over to a nurse instead of guessing."]];
+function renderSettings(){$("safe").innerHTML=RULES.map(r=>`<div class="rule"><span class="ri">${ic("shield",20)}</span><div><b>${r[0]}</b><small>${r[1]}</small></div><span class="lock">Always on</span></div>`).join("");
+ const MS=[["admit","After admission","Welcome message with STOP option"],["disch","After discharge","Recovery wishes, next steps, Book and Stop buttons"],["checkin","Day-1 check-in","Asks how the patient feels; starts the AI symptom check if needed"],["remind","Appointment reminder","Day before the visit, with reschedule option"]];
+ $("amsg").innerHTML=MS.map(m=>`<div class="rule"><span class="ri">${ic("msg",20)}</span><div><b>${m[1]}</b><small>${m[2]}</small></div><button class="tg" role="switch" aria-checked="${S.cfg[m[0]]}" aria-label="${m[1]}" data-a="cfg" data-v="${m[0]}"></button></div>`).join("")+`<div class="rule"><span class="ri">${ic("info",20)}</span><div><b>Opt-out keywords</b><small>STOP pauses all automated messages · START resumes. Red-flag symptoms are still escalated.</small></div><span class="lock">Always on</span></div>`;
+ $("bands").innerHTML=[["Critical","75–100","c","Emergency team alerted · patient offered ambulance or priority Emergency OPD · auto-assigned to doctor after 5 min"],["High","50–74","h","Urgent banner · nurse calls within 15 min · auto-assigned to doctor after 15 min"],["Moderate","25–49","m","Nurse callback task for today"],["Low","0–24","l","Added to the record · follow-up booking offered"]].map(b=>`<div class="band"><span class="sev ${b[2]}">${b[0]}</span><span>${b[1]}</span><span>${b[3]}</span></div>`).join("")+`<div class="fnote">Score = pain (0–10) × 6 + fever 15 + dizziness 15 + feeling worse 10. Chest pain or breathlessness is always Critical; bleeding is at least High.</div>`}
+function render(){renderShell();renderHome();renderPatients();renderAppts();renderTasks();if(NAVR[ROLE].includes("insights"))renderInsights();renderInteg();renderSettings();updCd()}
+
+/* ---------- events ---------- */
+function fillDet(){const p=gp($("ep").value),t=$("et").value;$("ed").value={PatientAdmitted:"Admitted to cardiology ward for observation.\n"+p.doc,PatientDischarged:"Discharged after cardiac observation. Follow-up due in 4 weeks.\n"+p.doc,FollowUpRecommended:"Follow-up in 4 weeks with cardiology\n"+p.doc,AppointmentMissed:"Patient did not attend the scheduled follow-up.\n"+p.doc,LabResultAvailable:"Lipid profile and BP report is ready for doctor review.\n"+p.doc,TestOrdered:"Lipid profile and BP test ordered by "+p.doc}[t]}
+function openEhr(id){if(id){$("ep").value=id;const p=gp(id);$("et").value=p.st==="NONE"||p.st==="COMPLETED"?"PatientAdmitted":p.st==="ADMITTED"?"PatientDischarged":["BOOKED","REMINDED"].includes(p.st)?"AppointmentMissed":"TestOrdered"}fillDet();$("ehrd").showModal()}
+function openPt(id){sel=id;go("patients");const b=document.querySelector(`.pr[data-i="${id}"]`);if(b)b.scrollIntoView({block:"nearest"})}
+document.addEventListener("click",e=>{const g=e.target.closest("[data-go]");if(g){go(g.dataset.go);return}
+ const b=e.target.closest("[data-a]");if(!b){if(!e.target.closest(".sw"))$("sr").hidden=true;return}const a=b.dataset.a,i=b.dataset.i;
+ const A={op:()=>openPt(i),adv:()=>{sel=i;adv(gp(i))},rev:()=>{sel=i;render();review(gp(i))},as:()=>assign(i),rv:()=>resolve(i),cl:()=>$("dlg").close(),asd:()=>assignDoc(i),unas:()=>unassign(i),reopen:()=>reopen(i),
+  ff15:()=>{S.esc.find(x=>x.id===i).due=0;autoCheck()},lrev:()=>labRev(i),linf:()=>labInf(i),lunrev:()=>labUnrev(i),lunif:()=>labUninf(i),lready:()=>labReady(i),called:()=>called(i),cbd:()=>cbDone(i),emer:()=>emerAdv(i),
+  eamb:()=>{emerReq(gp(i),"amb","staff");review(gp(i))},eopd:()=>{emerReq(gp(i),"opd","staff");review(gp(i))},
+  pf:()=>{S.pf=b.dataset.v;render()},tf:()=>{S.tf=b.dataset.v;render()},ehr:()=>openEhr(i||(S.view==="patients"?sel:null)),ehrx:()=>$("ehrd").close(),
+  cfg:()=>{const k=b.dataset.v;S.cfg[k]=!S.cfg[k];ev("Setting changed",(S.cfg[k]?"Turned on: ":"Turned off: ")+k+" message · by "+me().name,"n");render()},
+  camp:()=>{const c=S.camp.find(x=>x.id===i);c.st="Pending approval";c.res="Sent to compliance · consent records attached";ev("Campaign sent for approval",c.name+" · "+num(c.cons)+" consented contacts","g");render();toast("Sent for compliance approval")},
+  role:()=>{setRole(b.dataset.v);go("home")},uall:()=>{S.uAll=!S.uAll;renderShell()},undo:()=>{const u=toast.u;toast.u=null;$("toast").hidden=true;u&&u()},c:()=>reply(gp(sel),b.textContent,b.dataset.v)};
+ if(A[a])A[a]()});
+$("sd").onclick=()=>{reply(gp(sel),$("tx").value);$("tx").value="";$("tx").focus()};$("tx").onkeydown=e=>{if(e.key==="Enter")$("sd").click()};
+$("ff").onclick=()=>adv(gp(sel));$("send").onclick=sendEHR;$("bell").onclick=()=>{go("home");const u=$("urg");u.classList.remove("flash");void u.offsetWidth;u.classList.add("flash")};
+$("nadd").onclick=addNote;$("nin").onkeydown=e=>{if(e.key==="Enter"&&(e.metaKey||e.ctrlKey))addNote()};
+$("lang").innerHTML=Object.entries(LANGS).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")+'<option disabled>Tamil · Telugu · Marathi (coming soon)</option>';
+$("lang").onchange=()=>setLang(gp(sel),$("lang").value);$("vbtn").onclick=()=>toggleVoice(gp(sel));
+$("role").innerHTML=Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("");
+function setRole(r){ROLE=r;if(SESSION){SESSION.role=ROLE;saveSess()}S.tf="mine";go(NAVR[ROLE].includes(S.view)?S.view:"home");toast("Now viewing as "+me().label+" · "+me().name)}
+$("role").onchange=()=>setRole($("role").value);
+function setHosp(n){HN=n;document.title="CareGraph · "+n;if(S)render()}
+$("so").onclick=()=>{try{sessionStorage.removeItem("cg_session")}catch(_){}window.name="";SESSION=null;window.showLogin&&window.showLogin()};
+$("rs").onclick=()=>{["dlg","ehrd"].forEach(d=>$(d).open&&$(d).close());seed();sel="p2";ehrSel="p7";$("ep").value=ehrSel;$("et").value="PatientDischarged";$("q").value="";$("tx").value="";$("nin").value="";$("sr").hidden=true;go(S.view);toast("Demo reset to its starting state")};
+$("vl").onclick=()=>{S.lAll^=1;render()};
+$("ep").onchange=()=>{ehrSel=$("ep").value;fillDet()};$("et").onchange=fillDet;
+const find=v=>{v=v.trim().toLowerCase();return v?S.pts.filter(p=>(p.name+" "+p.mrn+" "+p.phone).toLowerCase().includes(v)):[]};
+$("q").oninput=()=>{const v=$("q").value.trim(),r=find(v).slice(0,6);$("sr").hidden=!v;$("sr").innerHTML=r.map(p=>`<button data-a="op" data-i="${p.id}"><span><b>${esc(p.name)}</b> · ID ${p.mrn}</span>${p.sev?sevPill(p):`<span class="pill n">${STS[p.st][0]}</span>`}</button>`).join("")||'<div class="empty">No matching patients</div>'};
+$("q").onkeydown=e=>{if(e.key==="Escape")$("sr").hidden=true;if(e.key==="Enter"){const r=find($("q").value)[0];if(r){openPt(r.id);$("sr").hidden=true;$("q").value=""}}};$("sr").onclick=()=>{$("sr").hidden=true;$("q").value=""};
+document.querySelectorAll("[data-ic]").forEach(e=>e.innerHTML=ic(e.dataset.ic,+e.dataset.s||20));
+$("brand").innerHTML=LOGO(36)+"CareGraph";$("pwl").innerHTML=LOGO(30)+"CareGraph";
+setInterval(()=>{if(S){autoCheck();updCd()}},1000);setInterval(()=>{if(S&&!$("dlg").open&&document.activeElement!==$("nin")&&document.activeElement!==$("tx"))renderShell()},30000);
+if(SESSION)HN=SESSION.hospital||HN;document.title="CareGraph · "+HN;
+seed();$("ep").innerHTML=S.pts.map(p=>`<option value="${p.id}">${esc(p.name)} (MRN: ${p.mrn})</option>`).join("");$("ep").value=ehrSel;$("et").value="PatientDischarged";fillDet();go("home");
+
+/* ---------- sign-in overlay ---------- */
+(function(){
+const HOSP=[{id:"arogya",name:"Arogya Demo Hospital",city:"Bengaluru",user:"care.arogya",pass:"CareGraph@123"},{id:"lakeview",name:"Lakeview Multispeciality Hospital",city:"Bengaluru",user:"care.lakeview",pass:"CareGraph@123"},{id:"stmarys",name:"St. Mary's Medical Centre",city:"Chennai",user:"care.stmarys",pass:"CareGraph@123"},{id:"riverside",name:"Riverside General Hospital",city:"Hyderabad",user:"care.riverside",pass:"CareGraph@123"},{id:"sunrise",name:"Sunrise Heart Institute",city:"Mumbai",user:"care.sunrise",pass:"CareGraph@123"}];
+const g=i=>document.getElementById("lo_"+i);
+g("brand").innerHTML=LOGO(44)+"CareGraph";
+g("h").innerHTML=HOSP.map(h=>`<option value="${h.id}">${esc(h.name)}</option>`).join("");
+g("r").innerHTML=Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("");
+g("net").innerHTML=["Patients, appointments and tasks in one simple CRM","Automated WhatsApp & voice follow-ups in local languages","Severity scoring that escalates emergencies early","Insights that tie follow-ups to hospital revenue"].map(t=>`<li><i></i>${t}</li>`).join("");
+const cur=()=>HOSP.find(h=>h.id===g("h").value),fail=m=>{g("err").textContent=m;g("err").classList.add("lo-on")};
+const demo=()=>{g("du").textContent=cur().user;g("dp").textContent=cur().pass};demo();
+g("h").onchange=()=>{demo();g("err").classList.remove("lo-on")};
+g("fill").onclick=()=>{g("u").value=cur().user;g("p").value=cur().pass;g("err").classList.remove("lo-on")};
+g("sh").onclick=()=>{const t=g("p").type==="password";g("p").type=t?"text":"password";g("sh").textContent=t?"Hide":"Show"};
+const doLogin=()=>{const h=cur(),u=g("u").value.trim(),p=g("p").value;
+ if(!u||!p)return fail("Enter your username and password.");
+ // Demo mode: any non-empty username and password signs in to the selected hospital
+ SESSION={hospital:h.name,hospitalId:h.id,user:u,role:g("r").value,at:Date.now()};saveSess();ROLE=SESSION.role;S.tf="mine";
+ g("p").value="";g("err").classList.remove("lo-on");document.getElementById("lo").hidden=true;document.body.style.overflow="";setHosp(SESSION.hospital);go("home")};
+g("go").onclick=doLogin;g("f").onsubmit=e=>{e.preventDefault();doLogin()};["u","p"].forEach(k=>g(k).onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();doLogin()}});
+window.showLogin=()=>{g("u").value="";g("p").value="";g("r").value=ROLE;g("err").classList.remove("lo-on");document.getElementById("lo").hidden=false;document.body.style.overflow="hidden";g("u").focus()};
+if(NEED){g("r").value=ROLE;document.getElementById("lo").hidden=false;document.body.style.overflow="hidden"}
+})();
+</script></body></html>
