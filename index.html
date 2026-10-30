@@ -51,8 +51,8 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:40px;background:
       <div class="brand" id="brand"></div>
     </div>
     <div>
-      <h1>The AI hospital CRM that brings patients back.</h1>
-      <p>Automated WhatsApp and voice follow-ups, early warning on emergencies, and more repeat visits — with less work for your care team.</p>
+      <h1>The AI maternity &amp; child care CRM that walks every mother and baby from first scan to the 2-year vaccines.</h1>
+      <p>Trimester-by-trimester reminders on WhatsApp and voice, early warning on pregnancy and newborn emergencies, a clean bill after delivery, then vaccines and growth checks for every baby — with less work for your care team.</p>
     </div>
     <ul class="net" id="net"></ul>
   </aside>
@@ -66,7 +66,7 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:40px;background:
         <div class="f"><label for="h">Hospital</label>
           <select class="in" id="h" required></select></div>
         <div class="f"><label for="r">Your role</label>
-          <select class="in" id="r"><option value="coord">Care Coordinator</option><option value="nurse">Nurse</option><option value="doctor">Doctor</option><option value="admin">Hospital Admin</option></select></div>
+          <select class="in" id="r"><option value="coord">Care Coordinator</option><option value="nurse">Nurse</option><option value="doctor">Doctor</option><option value="paed">Paediatrician</option><option value="admin">Hospital Admin</option></select></div>
         <div class="f"><label for="u">Username</label>
           <input class="in" id="u" autocomplete="username" autocapitalize="off" spellcheck="false" required></div>
         <div class="f"><label for="p">Password</label>
@@ -85,17 +85,17 @@ const ROUTES={dashboard:"dashboard.html"};          // route name -> file in the
 const nx=new URLSearchParams(location.search).get("next");
 const DASH=/^[\w.-]+\.html$/.test(nx||"")&&nx!=="login.html"&&nx!=="index.html"?nx:ROUTES.dashboard;
 const HOSP=[
- {id:"arogya",name:"Arogya Demo Hospital",city:"Bengaluru",user:"care.arogya",pass:"CareGraph@123"},
- {id:"lakeview",name:"Lakeview Multispeciality Hospital",city:"Bengaluru",user:"care.lakeview",pass:"CareGraph@123"},
- {id:"stmarys",name:"St. Mary's Medical Centre",city:"Chennai",user:"care.stmarys",pass:"CareGraph@123"},
- {id:"riverside",name:"Riverside General Hospital",city:"Hyderabad",user:"care.riverside",pass:"CareGraph@123"},
- {id:"sunrise",name:"Sunrise Heart Institute",city:"Mumbai",user:"care.sunrise",pass:"CareGraph@123"}
+ {id:"arogya",name:"Arogya Women & Maternity Hospital",city:"Bengaluru",user:"care.arogya",pass:"CareGraph@123"},
+ {id:"lakeview",name:"Lakeview Mother & Child Hospital",city:"Bengaluru",user:"care.lakeview",pass:"CareGraph@123"},
+ {id:"stmarys",name:"St. Mary's Women's Centre",city:"Chennai",user:"care.stmarys",pass:"CareGraph@123"},
+ {id:"riverside",name:"Riverside Maternity Hospital",city:"Hyderabad",user:"care.riverside",pass:"CareGraph@123"},
+ {id:"sunrise",name:"Sunrise Mother & Child Institute",city:"Mumbai",user:"care.sunrise",pass:"CareGraph@123"}
 ];
 const LOGO=s=>`<svg width="${s}" height="${s}" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 4c7 3 9 12 4 18-3-4-6-9-4-18z" fill="#F5A800"/><path d="M6 12c8-1 14 4 12 14-8 0-14-5-12-14z" fill="#3E9B3F"/><path d="M34 18c2 9-5 17-16 16 0-9 7-16 16-16z" fill="#F5A800" opacity=".9"/><path d="M12 20c6 0 10 4 8 12-6 0-10-4-8-12z" fill="#1E6B3A"/></svg>`;
 const $=i=>document.getElementById(i);
 $("brand").innerHTML=LOGO(44)+"CareGraph";
 $("h").innerHTML=HOSP.map(h=>`<option value="${h.id}">${h.name}</option>`).join("");
-$("net").innerHTML=["Patients, appointments and tasks in one simple CRM","Automated WhatsApp & voice follow-ups in local languages","Severity scoring that escalates emergencies early","Insights that tie follow-ups to hospital revenue"].map(t=>`<li><i></i>${t}</li>`).join("");
+$("net").innerHTML=["Every pregnancy from 1st trimester to the 6-week check","Scan, test and visit reminders on WhatsApp & voice","Early warning on pregnancy and postnatal danger signs","Itemised delivery bill, insurance and pay link","Newborn care, NICU, vaccines & growth to age 2"].map(t=>`<li><i></i>${t}</li>`).join("");
 const readSess=()=>{try{const v=sessionStorage.getItem("cg_session");if(v)return v}catch(_){}return window.name.startsWith("cg_session:")?window.name.slice(11):null};
 if(readSess())location.replace(DASH+"#s="+encodeURIComponent(readSess()));
 const cur=()=>HOSP.find(h=>h.id===$("h").value);
